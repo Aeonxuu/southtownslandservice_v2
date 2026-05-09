@@ -25,7 +25,7 @@ export const hero = {
   titleBottom: 'LAND SERVICE',
   primaryCta: {
     label: 'FREE ESTIMATE',
-    href: 'https://www.facebook.com/share/18WMCwmzsp/'
+    href: 'https://www.facebook.com/southtownslandservice'
   },
   secondaryCta: {
     label: 'VIEW SERVICES',
@@ -71,7 +71,7 @@ export const contacts = [
   {
     type: 'Facebook',
     label: 'Southtowns Land Service',
-    href: 'https://www.facebook.com/share/18WMCwmzsp/',
+    href: 'https://www.facebook.com/southtownslandservice',
     icon: 'facebook'
   },
   {
