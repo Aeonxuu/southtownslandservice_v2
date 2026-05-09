@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm --prefix southtownslandservice ci && npm --prefix southtownslandservice run build"
   publish = "southtownslandservice/dist"
 
 [build.environment]
