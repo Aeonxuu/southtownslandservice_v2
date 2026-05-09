@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "southtownslandservice-workspace",
+  "dependencies": {
+    "framer-motion": "^12.38.0",
+    "swiper": "^12.1.4"
+  },
+  "scripts": {
+    "dev": "npm run dev --prefix southtownslandservice",
+    "build": "npm run build --prefix southtownslandservice",
+    "preview": "npm run preview --prefix southtownslandservice"
+  }
+}

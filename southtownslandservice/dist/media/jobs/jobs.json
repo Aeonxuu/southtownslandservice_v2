@@ -1,0 +1,280 @@
+{
+    "jobs":  [
+                 {
+                     "id":  1,
+                     "title":  "Brush Hogging",
+                     "description":  "With a use of powerful brush hogging equipment, we cut down thick overgrowth to reclaim and clear your unused land for immediate maintenance or development.",
+                     "imageCount":  3
+                 },
+                 {
+                     "id":  2,
+                     "title":  "Brush hogging and forestry mulching",
+                     "description":  "With a use of heavy-duty tractor attachments, our team can clear challenging overgrown areas using brush hogging for fields or forestry mulching for denser woods to efficiently reclaim your land.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  3,
+                     "title":  "Brush hogging and forestry mulching",
+                     "description":  "With a use of specialized equipment, our team can quickly and efficiently clear large areas of dense brush and small trees using brush hogging or forestry mulching to prepare your land for any project.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  4,
+                     "title":  "Brush Hogging",
+                     "description":  "With a use of heavy-duty brush hogging equipment, our team can quickly clear dense brush and vegetation over large areas, reclaiming overgrown land for immediate use.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  5,
+                     "title":  "Plowing and Disking",
+                     "description":  "With a use of specialized tractor equipment, we efficiently plow and disk this field to thoroughly turn and prepare the soil for new planting or landscaping.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  6,
+                     "title":  "Stump Removal",
+                     "description":  "Query successful With a use of specialized clearing and stump removal equipment, our team can grind down and remove remaining stumps after mulching, creating a smooth, level field ready for any residential or commercial project.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  7,
+                     "title":  "Stump grinding",
+                     "description":  "With a use of specialized stump grinding machinery, our team can completely remove unsightly stumps and root systems, which levels the ground and prepares the area for landscaping or construction.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  8,
+                     "title":  "Tree stump removal",
+                     "description":  "With a use of stump grinding and yard cleanup equipment, our team can quickly prepare your property for spring by removing stumps and clearing debris to make your yard usable.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  9,
+                     "title":  "Tree stump removal",
+                     "description":  "With a use of heavy-duty stump grinding equipment, our team can efficiently remove tree stumps and grind them down to create a smooth, level surface for landscaping or construction projects.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  10,
+                     "title":  "Getting overgrown areas in control",
+                     "description":  "With a use of powerful brush hogging and forestry mulching equipment, we can quickly clear overgrown areas and reclaim your land for immediate use or development.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  11,
+                     "title":  "Tree removal",
+                     "description":  "Our team can efficiently remove large, fallen trees and clear debris caused by winter weather, while also providing complete snow removal services to ensure your property remains accessible and safe.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  12,
+                     "title":  "Installing Culvert",
+                     "description":  "With a use of excavation and installation techniques, our team can professionally replace your old culvert or install a new drainage system to ensure proper water flow and protect your access points.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  13,
+                     "title":  "Septic Repair",
+                     "description":  "With a use of excavation and repair techniques, our team can quickly address septic system issues by repairing or replacing damaged components to restore proper function and prevent further problems.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  14,
+                     "title":  "Water and electric line installation",
+                     "description":  "With a use of trenching and utility installation equipment, our team can efficiently install new water and electric lines, ensuring proper placement, secure connections, and minimal disruption to your property.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  15,
+                     "title":  "Removing structure and restoration",
+                     "description":  "With a use of excavation equipment and careful grading, our team can efficiently take down and remove an old pool and deck structure, then restore the area by finishing it with soil and grass seed.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  16,
+                     "title":  "Opening and leveling lot",
+                     "description":  "With a use of land clearing and grading equipment, our team can open up and level a new lot, then finish the area by laying down new grass.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  17,
+                     "title":  "Reclaiming garden beds",
+                     "description":  "Our team can remove old, deteriorated retaining walls and replace them with a new structure, while also building a matching garden box and reclaiming garden beds for future landscaping projects.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  18,
+                     "title":  "Dig out old pool foundation",
+                     "description":  "With a use of excavation equipment and grading techniques, our team can efficiently remove old concrete pool foundations and finish the area with fresh topsoil and grass seed for a clean, usable space.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  19,
+                     "title":  "Installing smooth sand base",
+                     "description":  "With a use of excavation equipment and precise leveling, our team can quickly dig the area and install a smooth sand base for a new pool installation.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  20,
+                     "title":  "Small scale clearing job",
+                     "description":  "With a use of appropriate equipment, our team can complete small-scale clearing jobs to remove unwanted vegetation and debris, successfully preparing the land for a customer.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  21,
+                     "title":  "Site preparation",
+                     "description":  "Our team can fully prepare your site for a new barn by expertly clearing and grading the area, building a new access driveway and a solid foundation pad, and installing all necessary utilities.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  22,
+                     "title":  "Backyard pathway",
+                     "description":  "With a use of excavation equipment and stone materials, our team can remove obstacles like stumps and fill in steep drop-offs to create level, easily accessible stone walkways or access points to your backyard.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  23,
+                     "title":  "Lot clearing",
+                     "description":  "Our team can perform comprehensive lot clearing and grading, leaving the area perfectly prepared and ready for soil and seed.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  24,
+                     "title":  "Construction Access Installation",
+                     "description":  "Our team can efficiently cut in and prepare a durable construction driveway and a necessary parking area, ensuring safe and easy access to your future home build site for all incoming materials and workers.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  25,
+                     "title":  "Smoothing out yard",
+                     "description":  "Our team can smooth out and level your rough, bumpy yard to eliminate difficult mowing conditions and create a uniform surface.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  26,
+                     "title":  "Driveway renewal",
+                     "description":  "With a use of grading and material application techniques, our team can effectively renew and widen your existing driveway, increasing both its functionality and curb appeal.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  27,
+                     "title":  "Driveway Renewal with millings",
+                     "description":  "With a use of excavation and grading equipment, our team can clear and level your old surface, then expertly apply millings to create a durable, renewed, and cost-effective driveway.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  28,
+                     "title":  "Renovate muddy driveway",
+                     "description":  "With a use of grading equipment and fresh stone, our team can repair a muddy, deteriorated driveway by leveling the surface and applying new stone for a durable and clean access road.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  29,
+                     "title":  "New driveway",
+                     "description":  "With a use of various equipment, our team can completely transform your property by removing old features, providing comprehensive services including new driveways, grading, stump grinding, excavation, forestry mulching, and brush hogging.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  30,
+                     "title":  "Driveway renewal",
+                     "description":  "With a use of grading and material application techniques, our team can effectively renew and widen your existing driveway, increasing both its functionality and curb appeal.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  31,
+                     "title":  "Driveway renewal",
+                     "description":  "With a use of grading and material application techniques, our team can effectively renew your existing driveway while also expanding its size for better access and usability.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  32,
+                     "title":  "Driveway renewal",
+                     "description":  "Our team can renew your driveway by expertly grading the surface and applying durable asphalt millings for a lasting, cost-effective finish.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  33,
+                     "title":  "Parking lot extension",
+                     "description":  "With a use of heavy machinery and quality materials, our team can efficiently expand your existing parking lot and renew your driveway to repair damage caused by the long winter.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  34,
+                     "title":  "Driveway expansion",
+                     "description":  "Our team can fully renew and expand your existing driveway, which increases both the width and length, providing improved access and a fresh surface.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  35,
+                     "title":  "Driveway expansion",
+                     "description":  "Our team can expand your driveway by creating functional loop entrances and exits, which allows for easy, safe drive-in and drive-out access without the need for reversing.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  36,
+                     "title":  "Driveway expansion",
+                     "description":  "We cleared and excavated the area adjacent to the garage to significantly extend the driveway’s footprint. After prepping the ground with high-quality landscape fabric to prevent weeds and shifting, we finished the surface with fresh stone. ",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  37,
+                     "title":  "Site Preparation and Land Transformation",
+                     "description":  "Our team executed a large-scale clearing of brush and timber surrounding the residence, followed by a precision regrade to create a clean, functional landscape.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  38,
+                     "title":  "Commercial Snow Management",
+                     "description":  "Utilizing a specialized fleet of heavy-duty vehicles and equipment ensures parking lots are cleared quickly and efficiently. Every surface is stripped to the pavement to maintain safe, uninterrupted access for both customers and staff.",
+                     "imageCount":  2
+                 },
+                 {
+                     "id":  39,
+                     "title":  "Snow Relocation & Stacking",
+                     "description":  "Heavy-duty loaders and specialized machinery are used to efficiently relocate large snow piles away from high-traffic zones. This process maximizes available parking space and maintains clear sightlines for safe navigation across your property.",
+                     "imageCount":  5
+                 },
+                 {
+                     "id":  40,
+                     "title":  "Residential Drainage & Trenching Solutions",
+                     "description":  "Our team can expertly handle residential drainage and trenching projects, utilizing specialized equipment to efficiently install drainage systems that effectively manage water flow and prevent flooding on your property.",
+                     "imageCount":  5
+                 },
+                 {
+                     "id":  41,
+                     "title":  "Underground Utility Trenching & Site Prep",
+                     "description":  "Our team executed precision trenching to facilitate the installation of new underground utility lines. This comprehensive site prep involved excavating to required depths, strategically placing protective utility vaults, and setting meter pedestals to provide seamless and secure utility access for the entire property.",
+                     "imageCount":  7
+                 },
+                 {
+                     "id":  42,
+                     "title":  "Foundation Excavation & Site Development",
+                     "description":  "We executed a large-scale foundation excavation, utilizing precision leveling to ensure a perfectly flat and stable base for new construction. Our team managed deep-trenching and sub-grade preparation, providing a structurally sound 'blank canvas' for the upcoming build.",
+                     "imageCount":  20
+                 },
+                 {
+                     "id":  43,
+                     "title":  "Waterfall Stream Reclamation & Erosion Control",
+                     "description":  "We executed a complete restoration of this property’s waterway, transforming an overgrown drainage area into a clean, functional stream. Our team cleared significant brush and debris, followed by heavy excavation to reshape the slope. We finalized the job with strategic boulder landscaping to create structural stability for the bridge crossing and armor the waterfall against future erosion.",
+                     "imageCount":  5
+                 },
+                 {
+                     "id":  44,
+                     "title":  "Driveway Expansion & Shed Pad Installation",
+                     "description":  "We expanded this driveway for additional parking and installed a precision-leveled, raised pad to provide a solid foundation for a new shed.",
+                     "imageCount":  10
+                 },
+                 {
+                     "id":  45,
+                     "title":  "New Cabin Utility & Driveway Completion",
+                     "description":  "We installed the final electrical and water service lines for a new cabin and completed the driveway. Next, we move into the drainage and septic phases.",
+                     "imageCount":  13
+                 },
+                 {
+                     "id":  46,
+                     "title":  "Driveway, Drainage & Pavilion Site Prep",
+                     "description":  "We installed a new driveway with integrated ditching and dual culverts, alongside a precision-leveled building pad for a new pavilion overlooking the pond.",
+                     "imageCount":  12
+                 }
+             ]
+}

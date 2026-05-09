@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'SchotisText';
+  src: url('/media/fonts/SchotisText.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white font-body text-ink antialiased;
+}
+
+::selection {
+  background: rgba(45, 80, 22, 0.18);
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-shell {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.24em] text-olive;
+  }
+
+  .section-title {
+    @apply mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl;
+  }
+
+  .section-copy {
+    @apply mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center justify-center rounded-sm border border-ink bg-ink px-5 py-3 text-sm font-semibold tracking-[0.16em] text-sand transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
+  }
+
+  .secondary-button {
+    @apply inline-flex items-center justify-center rounded-sm border border-white/70 bg-transparent px-5 py-3 text-sm font-semibold tracking-[0.16em] text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
+  }
+
+  .card-panel {
+    @apply rounded-2xl border border-black/5 bg-white shadow-soft;
+  }
+}
