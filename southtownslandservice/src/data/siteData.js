@@ -105,7 +105,7 @@ export const reviews = [];
 export const jobs = [
   buildJob(1, 'Brush Hogging', 'Powerful brush hogging equipment cuts down thick overgrowth to reclaim unused land for maintenance or development.', 2),
   buildJob(2, 'Brush hogging and forestry mulching', 'Heavy-duty tractor attachments clear challenging overgrown areas using brush hogging for fields or forestry mulching for denser woods.', 2),
-  buildJob(3, 'Brush hogging and forestry mulching', 'Specialized equipment quickly clears large areas of dense brush and small trees using brush hogging or forestry mulching.', 2),
+  buildJob(3, 'Brush hogging and forestry mulching', 'Specialized equipment quickly clears large areas of dense brush and small trees using brush hogging or forestry mulching.', 1),
   buildJob(4, 'Brush Hogging', 'Heavy-duty brush hogging equipment clears dense brush and vegetation over large areas, reclaiming overgrown land.', 1),
   buildJob(5, 'Plowing and Disking', 'Specialized tractor equipment plows and disks the field to turn and prepare the soil for planting or landscaping.', 1),
   buildJob(6, 'Stump Removal', 'Query successful. Specialized clearing and stump removal equipment grinds down and removes remaining stumps after mulching.', 1),
@@ -122,7 +122,7 @@ export const jobs = [
   buildJob(17, 'Reclaiming garden beds', 'Old retaining walls are removed and replaced, while a matching garden box and garden-bed reclamation are built.', 1),
   buildJob(18, 'Dig out old pool foundation', 'Excavation and grading remove old concrete pool foundations and finish the area with topsoil and grass seed.', 1),
   buildJob(19, 'Installing smooth sand base', 'Excavation and leveling create a smooth sand base for a new pool installation.', 1),
-  buildJob(20, 'Small scale clearing job', 'Appropriate equipment removes unwanted vegetation and debris for a small-scale clearing project.', 1),
+  buildJob(20, 'Forestry Mulching', 'Appropriate equipment removes unwanted vegetation and debris for a small-scale clearing project.', 4, 'jpg'),
   buildJob(21, 'Site preparation', 'The site is cleared and graded, with an access driveway, foundation pad, and utilities installed for a new barn.', 1),
   buildJob(22, 'Backyard pathway', 'Excavation equipment and stone materials create level stone walkways or access points after removing obstacles and filling drop-offs.', 2),
   buildJob(23, 'Lot clearing', 'Comprehensive lot clearing and grading leave the area ready for soil and seed.', 1),
@@ -133,7 +133,20 @@ export const jobs = [
   buildJob(28, 'Renovate muddy driveway', 'Grading equipment and fresh stone repair a muddy driveway and create a cleaner access road.', 1),
   buildJob(29, 'New driveway', 'The property is transformed with new driveways, grading, stump grinding, excavation, forestry mulching, and brush hogging.', 1),
   buildJob(30, 'Driveway renewal', 'Grading and material application renew and widen the existing driveway for better function and curb appeal.', 1),
-  buildJob(31, 'Driveway renewal', 'Grading and material application renew the driveway and expand its size for better access and usability.', 1),
+  {
+    id: 31,
+    title: 'Driveway renewal',
+    description: 'Grading and material application renew the driveway and expand its size for better access and usability.',
+    images: [
+      `${jobsRoot}/31/cover.png`,
+      `${jobsRoot}/31/1.png`,
+      `${jobsRoot}/31/2.jpg`,
+      `${jobsRoot}/31/3.jpg`,
+      `${jobsRoot}/31/4.jpg`,
+      `${jobsRoot}/31/5.jpg`,
+      `${jobsRoot}/31/6.jpg`
+    ]
+  },
   buildJob(32, 'Driveway renewal', 'The driveway is renewed through grading and durable asphalt millings.', 1),
   buildJob(33, 'Parking lot extension', 'Heavy machinery and quality materials expand the parking lot and renew the driveway after winter damage.', 1),
   buildJob(34, 'Driveway expansion', 'The driveway is renewed and expanded to increase width, length, access, and surface quality.', 1),

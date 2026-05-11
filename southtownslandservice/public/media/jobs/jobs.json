@@ -4,19 +4,19 @@
                      "id":  1,
                      "title":  "Brush Hogging",
                      "description":  "With a use of powerful brush hogging equipment, we cut down thick overgrowth to reclaim and clear your unused land for immediate maintenance or development.",
-                     "imageCount":  3
+                     "imageCount":  2
                  },
                  {
                      "id":  2,
                      "title":  "Brush hogging and forestry mulching",
                      "description":  "With a use of heavy-duty tractor attachments, our team can clear challenging overgrown areas using brush hogging for fields or forestry mulching for denser woods to efficiently reclaim your land.",
-                     "imageCount":  2
+                     "imageCount":  1
                  },
                  {
                      "id":  3,
                      "title":  "Brush hogging and forestry mulching",
                      "description":  "With a use of specialized equipment, our team can quickly and efficiently clear large areas of dense brush and small trees using brush hogging or forestry mulching to prepare your land for any project.",
-                     "imageCount":  2
+                     "imageCount":  1
                  },
                  {
                      "id":  4,
@@ -116,15 +116,15 @@
                  },
                  {
                      "id":  20,
-                     "title":  "Small scale clearing job",
+                     "title":  "Forestry Mulching",
                      "description":  "With a use of appropriate equipment, our team can complete small-scale clearing jobs to remove unwanted vegetation and debris, successfully preparing the land for a customer.",
-                     "imageCount":  2
+                     "imageCount":  4
                  },
                  {
                      "id":  21,
                      "title":  "Site preparation",
                      "description":  "Our team can fully prepare your site for a new barn by expertly clearing and grading the area, building a new access driveway and a solid foundation pad, and installing all necessary utilities.",
-                     "imageCount":  2
+                     "imageCount":  6
                  },
                  {
                      "id":  22,
@@ -184,7 +184,7 @@
                      "id":  31,
                      "title":  "Driveway renewal",
                      "description":  "With a use of grading and material application techniques, our team can effectively renew your existing driveway while also expanding its size for better access and usability.",
-                     "imageCount":  2
+                     "imageCount":  7
                  },
                  {
                      "id":  32,
