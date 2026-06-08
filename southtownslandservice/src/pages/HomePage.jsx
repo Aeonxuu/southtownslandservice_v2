@@ -300,7 +300,7 @@ export default function HomePage() {
             />
           </AnimatedSection>
           <div className="mt-10">
-            <div className="elfsight-app-74367033-1460-46dd-ae1d-9646d6b23154" data-elfsight-app-lazy></div>
+            <div className="elfsight-app-21047a20-592f-4b5d-8a8f-c50b1f8da0c0" data-elfsight-app-lazy></div>
           </div>
         </div>
       </section>

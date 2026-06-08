@@ -161,7 +161,8 @@ export const jobs = [
   buildJob(43, 'Waterfall Stream Reclamation & Erosion Control', 'The waterway is restored, the slope reshaped, and boulder landscaping added to stabilize the bridge crossing and waterfall edge.', 4, 'jpg'),
   buildJob(44, 'Driveway Expansion & Shed Pad Installation', 'We expanded this driveway for additional parking and installed a precision-leveled, raised pad to provide a solid foundation for a new shed.', 10, 'jpg'),
   buildJob(45, 'New Cabin Utility & Driveway Completion', 'We installed the final electrical and water service lines for a new cabin and completed the driveway. Next, we move into the drainage and septic phases.', 13, 'jpg'),
-  buildJob(46, 'Driveway, Drainage & Pavilion Site Prep', 'We installed a new driveway with integrated ditching and dual culverts, alongside a precision-leveled building pad for a new pavilion overlooking the pond.', 12, 'jpg')
+  buildJob(46, 'Driveway, Drainage & Pavilion Site Prep', 'We installed a new driveway with integrated ditching and dual culverts, alongside a precision-leveled building pad for a new pavilion overlooking the pond.', 12, 'jpg'),
+  buildJob(47, 'New Construction Site Reclamation & Final Grade', 'We cleared post-construction debris following a winter build, re-graded the entire lot for hydroseeding prep, and established a newly graded driveway and dedicated parking area.', 15, 'jpg')
 ];
 
-export const featuredJobs = jobs.filter((job) => job.id === 42 || job.id === 43 || job.id === 44 || job.id === 45 || job.id === 46);
+export const featuredJobs = jobs.filter((job) => job.id === 42 || job.id === 43 || job.id === 44 || job.id === 45 || job.id === 46 || job.id === 47);
