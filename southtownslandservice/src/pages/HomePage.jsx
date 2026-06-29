@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, BadgeCheck, Mail, Phone, Star } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Mail, MapPin, Phone, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AnimatedSection from '../components/AnimatedSection';
 import SectionHeading from '../components/SectionHeading';
-import ServicesCarousel from '../components/ServicesCarousel';
-import { brand, benefits, contacts, hero, reviews, services } from '../data/siteData';
+import { brand, benefits, contacts, hero, serviceAreas, services, stats } from '../data/siteData';
 
 const contactIcons = {
   facebook: Star,
@@ -35,21 +34,11 @@ export default function HomePage() {
   const handleContactDragEnd = (e, info) => {
     if (Math.abs(info.offset.x) > 50) {
       if (info.offset.x > 0) {
-        // Swiped right - go to previous
         setContactIndex((prev) => (prev === 0 ? contacts.length - 1 : prev - 1));
       } else {
-        // Swiped left - go to next
         setContactIndex((prev) => (prev === contacts.length - 1 ? 0 : prev + 1));
       }
     }
-  };
-
-  const goToContactPrev = () => {
-    setContactIndex((prev) => (prev === 0 ? contacts.length - 1 : prev - 1));
-  };
-
-  const goToContactNext = () => {
-    setContactIndex((prev) => (prev === contacts.length - 1 ? 0 : prev + 1));
   };
 
   const handleBenefitDragEnd = (e, info) => {
@@ -64,6 +53,7 @@ export default function HomePage() {
 
   return (
     <>
+      {/* ── HERO ── */}
       <section id="home" className="relative min-h-[65vh] overflow-hidden bg-ink text-white sm:min-h-[calc(100vh-4.5rem)]">
         <video className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline controlsList="nofullscreen nodownload noremoteplayback">
           <source src={brand.heroVideo} type="video/mp4" />
@@ -79,7 +69,7 @@ export default function HomePage() {
               <span className="whitespace-nowrap">{hero.titleBottom}</span>
             </h1>
             <div className="mt-4 flex flex-row items-center justify-center gap-2 sm:mt-7 sm:gap-3">
-              <a href={hero.primaryCta.href} target="_blank" rel="noreferrer" className="primary-button border-sand bg-sand text-ink px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-sm hover:bg-transparent hover:text-white">
+              <a href="#contact" className="primary-button border-sand bg-sand text-ink px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-sm hover:bg-transparent hover:text-white">
                 {hero.primaryCta.label}
                 <ArrowRight className="ml-1 h-3 w-3 sm:ml-2 sm:h-4 sm:w-4" />
               </a>
@@ -91,6 +81,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── ABOUT ── */}
       <section id="about" className="section-shell bg-sand">
         <div className="page-shell">
           <AnimatedSection>
@@ -101,6 +92,7 @@ export default function HomePage() {
             />
           </AnimatedSection>
 
+          {/* Mobile benefits carousel */}
           <div className="mt-8 sm:mt-10 md:hidden">
             <div className="relative">
               <div className="relative h-[18rem] overflow-hidden">
@@ -146,6 +138,7 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* Desktop benefits grid */}
           <div className="mt-10 hidden gap-6 md:grid md:grid-cols-3">
             {benefits.map((benefit, index) => (
               <AnimatedSection key={benefit.title} delay={index * 0.06}>
@@ -159,29 +152,69 @@ export default function HomePage() {
               </AnimatedSection>
             ))}
           </div>
+
+          {/* Stats strip */}
+          <AnimatedSection delay={0.1}>
+            <div className="mt-10 grid grid-cols-2 gap-4 border-t border-[#546326]/20 pt-10 sm:grid-cols-4">
+              {stats.map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center text-center">
+                  <span className="text-2xl font-extrabold text-moss sm:text-3xl">{stat.value}</span>
+                  <span className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-ink/50">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
+      {/* ── SERVICES ── */}
       <section id="services" className="section-shell bg-white">
         <div className="page-shell">
           <AnimatedSection>
             <SectionHeading
               eyebrow="Our Services"
-              title="Visual gallery of our work"
+              title="What we do"
               center
             />
           </AnimatedSection>
-          <div className="mt-10">
-            <ServicesCarousel services={services} />
-          </div>
-          <div className="mt-8 flex justify-center">
-            <a href="/jobs" className="primary-button bg-moss text-white border-moss hover:bg-white hover:text-moss">
-              Check Our Jobs
-            </a>
+
+          <div className="mt-10 grid items-stretch gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            {services.map((service, index) => (
+              <AnimatedSection key={service.title} delay={index * 0.07} className="h-full">
+                <div className="group flex h-full flex-col overflow-hidden rounded-md border border-black/8 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.11)]">
+                  <div className="relative aspect-[2/1] overflow-hidden bg-mist">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <h3 className="text-base font-bold text-ink">{service.title}</h3>
+                    <ul className="mt-3 flex-1 space-y-1.5">
+                      {service.jobs.map((job) => (
+                        <li key={job} className="text-sm text-slate-500">
+                          {job}
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href="/jobs"
+                      className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-moss transition hover:text-olive"
+                    >
+                      View Projects <ArrowRight size={12} />
+                    </a>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
+
+      {/* ── CONTACT ── */}
       <section id="contact" className="section-shell bg-sky text-white">
         <div className="page-shell text-center">
           <AnimatedSection>
@@ -198,7 +231,6 @@ export default function HomePage() {
           {/* Mobile Carousel */}
           <div className="mt-8 sm:mt-10 lg:hidden">
             <div className="relative">
-              {/* Carousel Container */}
               <div className="relative h-[14rem] overflow-hidden">
                 <motion.div
                   animate={{ x: `-${contactIndex * 100}%` }}
@@ -208,7 +240,7 @@ export default function HomePage() {
                   onDragEnd={handleContactDragEnd}
                   className="flex h-full cursor-grab active:cursor-grabbing"
                 >
-                  {contacts.map((contact, index) => {
+                  {contacts.map((contact) => {
                     const iconSources = {
                       Facebook: '/media/icons/facebook_icon.png',
                       BBB: '/media/icons/bbb_icon.png',
@@ -242,7 +274,6 @@ export default function HomePage() {
                 </motion.div>
               </div>
 
-              {/* Pagination Dots */}
               <div className="mt-4 flex gap-2 justify-center">
                 {contacts.map((_, index) => (
                   <motion.button
@@ -290,6 +321,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── REVIEWS ── */}
       <section id="reviews" className="section-shell bg-white">
         <div className="page-shell">
           <AnimatedSection>
@@ -302,6 +334,46 @@ export default function HomePage() {
           <div className="mt-10">
             <div className="elfsight-app-21047a20-592f-4b5d-8a8f-c50b1f8da0c0" data-elfsight-app-lazy></div>
           </div>
+        </div>
+      </section>
+
+      {/* ── SERVICE AREA ── */}
+      <section id="areas" className="section-shell bg-ink text-white">
+        <div className="page-shell">
+          <AnimatedSection>
+            <SectionHeading
+              eyebrow="Service Area"
+              title={serviceAreas.headline}
+              center
+            />
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.08}>
+            <div className="mt-10 flex flex-wrap justify-center gap-2">
+              {serviceAreas.regions.map((region) => (
+                <span
+                  key={region}
+                  className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-white/90"
+                >
+                  {region}
+                </span>
+              ))}
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.14}>
+            <div className="mx-auto mt-8 max-w-3xl">
+              <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+                {serviceAreas.towns.map((town) => (
+                  <span key={town} className="flex items-center gap-1 text-sm text-white/60">
+                    <MapPin size={11} className="text-moss" />
+                    {town}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-8 text-center text-sm text-white/50">{serviceAreas.note}</p>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </>
