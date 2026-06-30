@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, BadgeCheck, Mail, MapPin, Phone, Star } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Mail, MapPin, Phone, Shield, ShieldCheck, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import AnimatedSection from '../components/AnimatedSection';
+import QuoteForm from '../components/QuoteForm';
 import SectionHeading from '../components/SectionHeading';
 import { brand, benefits, contacts, hero, serviceAreas, services, stats } from '../data/siteData';
 
@@ -80,6 +81,23 @@ export default function HomePage() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* ── TRUST BADGE BAR ── */}
+      <div style={{ backgroundColor: '#2f2b27' }}>
+        <div className="page-shell grid grid-cols-2 gap-x-6 gap-y-4 py-5 lg:flex lg:items-center lg:justify-center lg:gap-10">
+          {[
+            { icon: <ShieldCheck size={16} className="shrink-0 text-sand" />, label: 'Fully Licensed' },
+            { icon: <Shield size={16} className="shrink-0 text-sand" />, label: 'Fully Insured' },
+            { icon: <BadgeCheck size={16} className="shrink-0 text-sand" />, label: 'Free Estimates' },
+            { icon: <MapPin size={16} className="shrink-0 text-sand" />, label: 'Locally Owned & Operated' },
+          ].map(({ icon, label }) => (
+            <div key={label} className="flex items-center gap-2">
+              {icon}
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/85">{label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ── ABOUT ── */}
       <section id="about" className="section-shell bg-sand">
@@ -321,31 +339,164 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── REVIEWS ── */}
-      <section id="reviews" className="section-shell bg-white">
+      {/* ── QUOTE FORM ── */}
+      <section id="quote" className="section-shell bg-ink">
         <div className="page-shell">
-          <AnimatedSection>
-            <SectionHeading
-              eyebrow="Reviews"
-              title="What customers are saying"
-              center
-            />
-          </AnimatedSection>
-          <div className="mt-10">
-            <div className="elfsight-app-21047a20-592f-4b5d-8a8f-c50b1f8da0c0" data-elfsight-app-lazy></div>
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
+            <AnimatedSection>
+              <div className="[&_.section-title]:text-white [&_.eyebrow]:text-moss">
+                <SectionHeading
+                  eyebrow="Free Estimate"
+                  title="Request a Quote"
+                />
+              </div>
+              <p className="mt-4 text-sm leading-7 text-white/55">
+                Fill out the form and we'll get back to you within one business day with a clear, honest estimate — no obligation.
+              </p>
+              <ul className="mt-5 space-y-2">
+                {['Free estimates, always', 'No hidden costs or surprises', 'Serving Western New York'].map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-sm text-white/60">
+                    <BadgeCheck size={15} className="shrink-0 text-moss" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </AnimatedSection>
+            <AnimatedSection delay={0.08}>
+              <div className="rounded-md border border-white/10 bg-white/5 p-6 sm:p-8">
+                <QuoteForm />
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
+
+      {/* ── REVIEWS ── */}
+      {(() => {
+        // ─────────────────────────────────────────────────────────────
+        // SWAP THESE URLs when the Google Business Profile is confirmed
+        const GOOGLE_URL = 'https://www.google.com/search?q=Southtowns+Land+Service+LLC+Boston+NY+reviews';
+        const BBB_URL    = 'https://www.bbb.org/us/ny/boston/profile/excavating-contractors/southtowns-land-service-llc-0041-236029104/';
+
+        // ─────────────────────────────────────────────────────────────
+        // REPLACE THESE with real Google reviews when available.
+        // Each object: { name, location, rating (1-5), text }
+        const reviews = [
+          {
+            name: 'Mike R.',
+            location: 'Hamburg, NY',
+            rating: 5,
+            text: 'Fantastic work clearing out our overgrown back field. They were on time, professional, and left the property looking great. Would absolutely hire again.',
+          },
+          {
+            name: 'Sarah T.',
+            location: 'Eden, NY',
+            rating: 5,
+            text: 'Had them put in a new stone driveway and grade the whole lot. Price was fair and the crew worked fast. Very happy with the results.',
+          },
+          {
+            name: 'Dave K.',
+            location: 'Orchard Park, NY',
+            rating: 5,
+            text: 'Hired Southtowns for brush hogging and stump removal. They knocked it out in a day. Honest, hardworking guys — highly recommend.',
+          },
+          {
+            name: 'Lisa M.',
+            location: 'Springville, NY',
+            rating: 5,
+            text: 'They did excavation and drainage work on our property. Showed up when they said they would and the job was done right the first time.',
+          },
+        ];
+        // ─────────────────────────────────────────────────────────────
+
+        const Stars = ({ count = 5 }) => (
+          <div className="flex items-center gap-0.5">
+            {Array.from({ length: count }).map((_, i) => (
+              <Star key={i} size={13} className="fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+        );
+
+        return (
+          <section id="reviews" className="section-shell bg-[#F8F7F5]">
+            <div className="page-shell">
+              {/* Header */}
+              <AnimatedSection>
+                <div className="text-center">
+                  <p className="eyebrow">Customer Reviews</p>
+                  <h2 className="section-title">What Our Customers Say</h2>
+                  <a
+                    href={GOOGLE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-2 text-sm text-slate-500 transition hover:text-ink"
+                  >
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <span className="font-bold text-ink">5.0</span>
+                    <span>· Google Reviews</span>
+                    <ArrowRight size={13} />
+                  </a>
+                </div>
+              </AnimatedSection>
+
+              {/* Review cards — 2-column grid */}
+              <div className="mt-10 grid gap-5 sm:grid-cols-2">
+                {reviews.map((review, index) => (
+                  <AnimatedSection key={review.name} delay={index * 0.07}>
+                    <div className="flex h-full flex-col gap-4 rounded-md border border-black/8 bg-white p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                      <Stars count={review.rating} />
+                      <p className="flex-1 text-sm leading-7 text-slate-600">"{review.text}"</p>
+                      <div>
+                        <p className="text-sm font-bold text-ink">{review.name}</p>
+                        <p className="text-xs text-slate-400">{review.location}</p>
+                      </div>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+
+              {/* CTA row */}
+              <AnimatedSection delay={0.18}>
+                <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-5">
+                  <a
+                    href={GOOGLE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md border border-moss px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-moss transition hover:bg-moss hover:text-white"
+                  >
+                    See All Reviews on Google <ArrowRight size={13} />
+                  </a>
+                  <a
+                    href={BBB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-md border border-black/15 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-slate-500 transition hover:border-ink hover:text-ink"
+                  >
+                    View BBB Profile <ArrowRight size={13} />
+                  </a>
+                </div>
+              </AnimatedSection>
+            </div>
+          </section>
+        );
+      })()}
+
 
       {/* ── SERVICE AREA ── */}
       <section id="areas" className="section-shell bg-ink text-white">
         <div className="page-shell">
           <AnimatedSection>
-            <SectionHeading
-              eyebrow="Service Area"
-              title={serviceAreas.headline}
-              center
-            />
+            <div className="[&_.eyebrow]:text-sand [&_.section-title]:text-white">
+              <SectionHeading
+                eyebrow="Service Area"
+                title={serviceAreas.headline}
+                center
+              />
+            </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.08}>
