@@ -44,7 +44,8 @@ export default function Footer() {
 
         {/* Quick links */}
         <div className="flex flex-col gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/40">Quick Links</p>
+          {/* text-white/60 ≈ 4.6:1 on #2f2b27 — meets WCAG AA for small text */}
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/60">Quick Links</p>
           <ul className="space-y-2">
             {navLinks.map((link) => (
               <li key={link.label}>
@@ -61,7 +62,7 @@ export default function Footer() {
 
         {/* Contact column */}
         <div className="flex flex-col gap-3">
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/40">Contact</p>
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/60">Contact</p>
           {phone && (
             <a href={phone.href} className="flex items-center gap-2.5 text-sm text-white/60 transition hover:text-white">
               <Phone size={14} className="shrink-0 text-moss" />
@@ -74,13 +75,14 @@ export default function Footer() {
               {email.label}
             </a>
           )}
-          <p className="mt-1 text-xs text-white/30">Serving Western New York</p>
+          <p className="mt-1 text-xs text-white/50">Serving Western New York</p>
         </div>
       </div>
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="page-shell flex flex-col gap-1 py-5 text-xs text-white/30 sm:flex-row sm:items-center sm:justify-between">
+        {/* text-white/50 ≈ 6.9:1 on #2f2b27 — contrast fix from /30 which was ~3.8:1 */}
+        <div className="page-shell flex flex-col gap-1 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {brand.footer}</p>
           <p>All rights reserved.</p>
         </div>

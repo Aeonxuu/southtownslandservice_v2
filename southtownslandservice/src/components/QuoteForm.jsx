@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { CheckCircle, Clock, Loader2, Send } from 'lucide-react';
+import { CheckCircle, ChevronDown, Clock, Loader2, Send } from 'lucide-react';
 
 // ── Rate limiting ────────────────────────────────────────────────────────────
 const RL_KEY     = 'stls_quote_ts';  // localStorage key
@@ -81,16 +81,21 @@ function validatePhone(val) {
   return null;
 }
 
-export default function QuoteForm({ light = false }) {
+export default function QuoteForm({ light = false, noSubmit = false, onStatusChange }) {
   const formRef = useRef(null);
   const [status, setStatus] = useState('idle'); // idle | sending | success | error | blocked
   const [errors, setErrors] = useState({});
   const [resetIn, setResetIn] = useState(0);
 
+  const updateStatus = (s) => {
+    setStatus(s);
+    onStatusChange?.(s);
+  };
+
   // Check rate limit once on mount
   useState(() => {
     const { blocked, resetIn: ms } = getRateLimitInfo();
-    if (blocked) { setStatus('blocked'); setResetIn(ms); }
+    if (blocked) { updateStatus('blocked'); setResetIn(ms); }
   });
 
   const inputClass = light ? lightInput : darkInput;
@@ -134,7 +139,7 @@ export default function QuoteForm({ light = false }) {
 
     // Re-check rate limit in case the window closed while the form was open
     const { blocked, resetIn: ms } = getRateLimitInfo();
-    if (blocked) { setStatus('blocked'); setResetIn(ms); return; }
+    if (blocked) { updateStatus('blocked'); setResetIn(ms); return; }
 
     const form = formRef.current;
     const data = Object.fromEntries(new FormData(form));
@@ -143,15 +148,15 @@ export default function QuoteForm({ light = false }) {
       setErrors(errs);
       return;
     }
-    setStatus('sending');
+    updateStatus('sending');
     try {
       await emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form, { publicKey: PUBLIC_KEY });
       recordTimestamp();
-      setStatus('success');
+      updateStatus('success');
       form.reset();
       setErrors({});
     } catch {
-      setStatus('error');
+      updateStatus('error');
     }
   };
 
@@ -190,7 +195,7 @@ export default function QuoteForm({ light = false }) {
         </p>
         <button
           type="button"
-          onClick={() => setStatus('idle')}
+          onClick={() => updateStatus('idle')}
           className="mt-2 text-xs font-bold uppercase tracking-[0.14em] text-moss underline-offset-4 hover:underline"
         >
           Submit another request
@@ -200,7 +205,7 @@ export default function QuoteForm({ light = false }) {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
+    <form id="quote-form-id" ref={formRef} onSubmit={handleSubmit} noValidate className="grid gap-5 sm:grid-cols-2">
       {/* Full Name */}
       <div>
         <label className={labelClass}>Full Name <span className="text-moss">*</span></label>
@@ -263,23 +268,44 @@ export default function QuoteForm({ light = false }) {
       {/* Service */}
       <div>
         <label className={labelClass}>Service Needed <span className="text-moss">*</span></label>
-        <select name="service" required className={fieldClass('service') + ' appearance-none cursor-pointer'}>
-          <option value="" className={light ? 'bg-white' : 'bg-ink'}>Select a service…</option>
-          {SERVICES.map((s) => (
-            <option key={s} value={s} className={light ? 'bg-white' : 'bg-ink'}>{s}</option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name="service"
+            required
+            className={fieldClass('service') + ' appearance-none cursor-pointer'}
+            style={{ paddingRight: '2.5rem' }}
+          >
+            <option value="" className={light ? 'bg-white' : 'bg-ink'}>Select a service…</option>
+            {SERVICES.map((s) => (
+              <option key={s} value={s} className={light ? 'bg-white' : 'bg-ink'}>{s}</option>
+            ))}
+          </select>
+          <ChevronDown
+            size={16}
+            className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${light ? 'text-[#65676B]' : 'text-white/40'}`}
+          />
+        </div>
       </div>
 
       {/* Best Time */}
       <div>
         <label className={labelClass}>Best Time to Call</label>
-        <select name="best_time" className={fieldClass('best_time') + ' appearance-none cursor-pointer'}>
-          <option value="" className={light ? 'bg-white' : 'bg-ink'}>No preference</option>
-          {TIMES.map((t) => (
-            <option key={t} value={t} className={light ? 'bg-white' : 'bg-ink'}>{t}</option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name="best_time"
+            className={fieldClass('best_time') + ' appearance-none cursor-pointer'}
+            style={{ paddingRight: '2.5rem' }}
+          >
+            <option value="" className={light ? 'bg-white' : 'bg-ink'}>No preference</option>
+            {TIMES.map((t) => (
+              <option key={t} value={t} className={light ? 'bg-white' : 'bg-ink'}>{t}</option>
+            ))}
+          </select>
+          <ChevronDown
+            size={16}
+            className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${light ? 'text-[#65676B]' : 'text-white/40'}`}
+          />
+        </div>
       </div>
 
       {/* Project Description */}
@@ -300,26 +326,28 @@ export default function QuoteForm({ light = false }) {
         </p>
       )}
 
-      {/* Submit */}
-      <div className="sm:col-span-2">
-        <button
-          type="submit"
-          disabled={status === 'sending'}
-          className="inline-flex items-center gap-2.5 rounded-md bg-moss px-7 py-3.5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-olive disabled:opacity-60"
-        >
-          {status === 'sending' ? (
-            <>
-              <Loader2 size={15} className="animate-spin" />
-              Sending…
-            </>
-          ) : (
-            <>
-              <Send size={15} />
-              Request a Free Quote
-            </>
-          )}
-        </button>
-      </div>
+      {/* Submit — hidden in modal (QuoteModal renders its own sticky footer button) */}
+      {!noSubmit && (
+        <div className="sm:col-span-2">
+          <button
+            type="submit"
+            disabled={status === 'sending'}
+            className="inline-flex items-center gap-2.5 rounded-md bg-moss px-7 py-3.5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-olive disabled:opacity-60"
+          >
+            {status === 'sending' ? (
+              <>
+                <Loader2 size={15} className="animate-spin" />
+                Sending…
+              </>
+            ) : (
+              <>
+                <Send size={15} />
+                Request a Free Quote
+              </>
+            )}
+          </button>
+        </div>
+      )}
     </form>
   );
 }

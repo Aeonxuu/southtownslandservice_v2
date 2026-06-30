@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { ArrowRight, BadgeCheck, ChevronDown, ClipboardList, CheckCircle2, Mail, MapPin, Phone, Shield, ShieldCheck, Star } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, Fragment } from 'react';
+import { ArrowRight, BadgeCheck, ChevronDown, ChevronRight, ClipboardList, CheckCircle2, Mail, MapPin, Phone, Shield, ShieldCheck, Star } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import AnimatedSection from '../components/AnimatedSection';
 import SectionHeading from '../components/SectionHeading';
 import { useQuoteModal } from '../context/QuoteModalContext';
@@ -16,8 +16,7 @@ const contactIcons = {
 
 export default function HomePage() {
   const { openModal } = useQuoteModal();
-  const [contactIndex, setContactIndex] = useState(0);
-  const [benefitIndex, setBenefitIndex] = useState(0);
+  const reducedMotion = useReducedMotion();
   const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
@@ -34,31 +33,12 @@ export default function HomePage() {
     document.body.appendChild(script);
   }, []);
 
-  const handleContactDragEnd = (e, info) => {
-    if (Math.abs(info.offset.x) > 50) {
-      if (info.offset.x > 0) {
-        setContactIndex((prev) => (prev === 0 ? contacts.length - 1 : prev - 1));
-      } else {
-        setContactIndex((prev) => (prev === contacts.length - 1 ? 0 : prev + 1));
-      }
-    }
-  };
-
-  const handleBenefitDragEnd = (e, info) => {
-    if (Math.abs(info.offset.x) > 50) {
-      if (info.offset.x > 0) {
-        setBenefitIndex((prev) => (prev === 0 ? benefits.length - 1 : prev - 1));
-      } else {
-        setBenefitIndex((prev) => (prev === benefits.length - 1 ? 0 : prev + 1));
-      }
-    }
-  };
-
   return (
     <>
       {/* ── HERO ── */}
       <section id="home" className="relative min-h-[65vh] overflow-hidden bg-ink text-white sm:min-h-[calc(100vh-4.5rem)]">
-        <video className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline controlsList="nofullscreen nodownload noremoteplayback">
+        {/* aria-hidden: decorative background video, no informational content */}
+        <video aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" autoPlay muted loop playsInline controlsList="nofullscreen nodownload noremoteplayback">
           <source src={brand.heroVideo} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-hero-grid" />
@@ -88,21 +68,62 @@ export default function HomePage() {
       </section>
 
       {/* ── TRUST BADGE BAR ── */}
-      <div style={{ backgroundColor: '#2f2b27' }}>
-        <div className="page-shell grid grid-cols-2 gap-x-6 gap-y-4 py-5 lg:flex lg:items-center lg:justify-center lg:gap-10">
-          {[
-            { icon: <ShieldCheck size={16} className="shrink-0 text-sand" />, label: 'Fully Licensed' },
-            { icon: <Shield size={16} className="shrink-0 text-sand" />, label: 'Fully Insured' },
-            { icon: <BadgeCheck size={16} className="shrink-0 text-sand" />, label: 'Free Estimates' },
-            { icon: <MapPin size={16} className="shrink-0 text-sand" />, label: 'Locally Owned & Operated' },
-          ].map(({ icon, label }) => (
-            <div key={label} className="flex items-center gap-2">
-              {icon}
-              <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/85">{label}</span>
+      {(() => {
+        const BADGES = [
+          { icon: <ShieldCheck size={16} className="shrink-0 text-sand" />, label: 'Fully Licensed' },
+          { icon: <Shield size={16} className="shrink-0 text-sand" />, label: 'Fully Insured' },
+          { icon: <BadgeCheck size={16} className="shrink-0 text-sand" />, label: 'Free Estimates' },
+          { icon: <MapPin size={16} className="shrink-0 text-sand" />, label: 'Locally Owned & Operated' },
+        ];
+        return (
+          <div style={{ backgroundColor: '#2f2b27' }}>
+            {/* Mobile ticker (< 768px) ─────────────────────────────────────────
+                aria-hidden: identical info exists in the footer trust strip
+                Animation via inline style — immune to global reduced-motion CSS
+                rules. useReducedMotion() from Framer Motion controls the gate.  */}
+            <div
+              className={`py-3.5 md:hidden ${reducedMotion ? 'ticker-fallback-scroll' : ''}`}
+              style={{ overflow: reducedMotion ? 'auto' : 'hidden' }}
+              aria-hidden="true"
+            >
+              {/* Badges duplicated × 2: translateX(-50%) scrolls exactly one full
+                  set width, landing on the identical second copy → seamless loop */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  width: 'max-content',
+                  alignItems: 'center',
+                  willChange: 'transform',
+                  animation: reducedMotion ? 'none' : 'badge-ticker 32s linear infinite',
+                }}
+              >
+                {[...BADGES, ...BADGES].map(({ icon, label }, i) => (
+                  <span key={i} className="inline-flex shrink-0 items-center">
+                    <span className="inline-flex items-center gap-2 px-5">
+                      {icon}
+                      <span className="whitespace-nowrap text-xs font-bold uppercase tracking-[0.16em] text-white/85">
+                        {label}
+                      </span>
+                    </span>
+                    <span className="text-[10px] text-white/30">•</span>
+                  </span>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
+
+            {/* Desktop static layout (≥ 768px) — unchanged ─────────────────── */}
+            <div className="page-shell hidden gap-x-6 gap-y-4 py-5 md:grid md:grid-cols-2 lg:flex lg:items-center lg:justify-center lg:gap-10">
+              {BADGES.map(({ icon, label }) => (
+                <div key={label} className="flex items-center gap-2">
+                  {icon}
+                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-white/85">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── ABOUT ── */}
       <section id="about" className="section-shell bg-sand">
@@ -115,50 +136,19 @@ export default function HomePage() {
             />
           </AnimatedSection>
 
-          {/* Mobile benefits carousel */}
-          <div className="mt-8 sm:mt-10 md:hidden">
-            <div className="relative">
-              <div className="relative h-[18rem] overflow-hidden">
-                <motion.div
-                  animate={{ x: `-${benefitIndex * 100}%` }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                  drag="x"
-                  dragElastic={0.15}
-                  onDragEnd={handleBenefitDragEnd}
-                  className="flex h-full cursor-grab active:cursor-grabbing"
-                >
-                  {benefits.map((benefit) => (
-                    <div key={benefit.title} className="min-w-full h-full p-1">
-                      <div className="flex h-full flex-col items-center justify-center border-2 border-[#546326] bg-[#FFFCE9] px-5 py-6 text-center shadow-sm">
-                        <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-moss/10 text-moss">
-                          <BadgeCheck className="h-5 w-5" />
-                        </div>
-                        <h3 className="text-lg font-bold text-ink">{benefit.title}</h3>
-                        <p className="mt-3 text-sm leading-6 text-slate-600">{benefit.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </motion.div>
+          {/* Mobile benefits — stacked list, all visible at once */}
+          <div className="mt-8 flex flex-col gap-3 md:hidden">
+            {benefits.map((benefit) => (
+              <div key={benefit.title} className="flex items-start gap-4 border-2 border-[#546326] bg-[#FFFCE9] px-4 py-4">
+                <div className="mt-0.5 shrink-0 inline-flex h-8 w-8 items-center justify-center rounded-full bg-moss/10 text-moss">
+                  <BadgeCheck className="h-4 w-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-ink">{benefit.title}</h3>
+                  <p className="mt-1 text-sm leading-5 text-slate-600">{benefit.description}</p>
+                </div>
               </div>
-
-              <div className="mt-4 flex justify-center gap-2">
-                {benefits.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => setBenefitIndex(index)}
-                    animate={{
-                      width: index === benefitIndex ? 32 : 12,
-                      backgroundColor: index === benefitIndex ? '#2d5016' : '#ffffffd9',
-                      opacity: index === benefitIndex ? 1 : 0.8,
-                      boxShadow: index === benefitIndex ? '0 0 0 1px rgba(45, 80, 22, 0.18)' : '0 0 0 1px rgba(45, 80, 22, 0.45)'
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="h-2.5 rounded-full transition-all duration-300"
-                    aria-label={`Go to reason ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Desktop benefits grid */}
@@ -198,6 +188,7 @@ export default function HomePage() {
                     <img
                       src={service.image}
                       alt={service.title}
+                      loading="lazy"
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
@@ -254,9 +245,10 @@ export default function HomePage() {
               </AnimatedSection>
 
               <div className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
+                {/* Fragment key: avoids React "each child must have a unique key" warning on <>fragments */}
                 {STEPS.map((step, i) => (
-                  <>
-                    <AnimatedSection key={step.title} delay={i * 0.1} className="flex flex-1 flex-col items-center text-center px-6">
+                  <Fragment key={step.title}>
+                    <AnimatedSection delay={i * 0.1} className="flex flex-1 flex-col items-center text-center px-6">
                       {/* Icon circle with step number badge */}
                       <div className="relative">
                         <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-moss/25 bg-white shadow-sm">
@@ -267,16 +259,16 @@ export default function HomePage() {
                         </span>
                       </div>
                       <h3 className="mt-5 text-base font-bold text-ink">{step.title}</h3>
-                      <p className="mt-2.5 max-w-[220px] text-sm leading-6 text-slate-500">{step.text}</p>
+                      <p className="mt-2.5 max-w-xs text-sm leading-6 text-slate-500">{step.text}</p>
                     </AnimatedSection>
 
                     {/* Arrow connector — desktop only */}
                     {i < STEPS.length - 1 && (
-                      <div key={`arrow-${i}`} className="hidden lg:flex items-start justify-center pt-10 w-10 shrink-0">
+                      <div className="hidden lg:flex items-start justify-center pt-10 w-10 shrink-0">
                         <ArrowRight size={20} className="text-moss/35" strokeWidth={2} />
                       </div>
                     )}
-                  </>
+                  </Fragment>
                 ))}
               </div>
             </div>
@@ -298,70 +290,39 @@ export default function HomePage() {
             </div>
           </AnimatedSection>
 
-          {/* Mobile Carousel */}
-          <div className="mt-8 sm:mt-10 lg:hidden">
-            <div className="relative">
-              <div className="relative h-[14rem] overflow-hidden">
-                <motion.div
-                  animate={{ x: `-${contactIndex * 100}%` }}
-                  transition={{ duration: 0.4, ease: 'easeOut' }}
-                  drag="x"
-                  dragElastic={0.15}
-                  onDragEnd={handleContactDragEnd}
-                  className="flex h-full cursor-grab active:cursor-grabbing"
+          {/* Mobile — stacked tappable rows, all visible at once */}
+          <div className="mt-8 flex flex-col gap-2 lg:hidden">
+            {contacts.map((contact) => {
+              const iconSources = {
+                Facebook: '/media/icons/facebook_icon.png',
+                BBB: '/media/icons/bbb_icon.png',
+                Yelp: '/media/icons/yelp_icon.png'
+              };
+              const iconSource = iconSources[contact.type];
+              const Icon = contactIcons[contact.icon] || BadgeCheck;
+
+              return (
+                <a
+                  key={contact.type}
+                  href={contact.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-4 border border-white/15 bg-white/10 px-4 py-3.5 backdrop-blur-sm transition active:bg-white/20"
                 >
-                  {contacts.map((contact) => {
-                    const iconSources = {
-                      Facebook: '/media/icons/facebook_icon.png',
-                      BBB: '/media/icons/bbb_icon.png',
-                      Yelp: '/media/icons/yelp_icon.png'
-                    };
-                    const iconSource = iconSources[contact.type];
-                    const Icon = contactIcons[contact.icon] || BadgeCheck;
-
-                    return (
-                      <a
-                        key={contact.type}
-                        href={contact.href}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="relative min-w-full h-full border border-white/15 bg-white/10 p-4 backdrop-blur-sm transition duration-300 hover:bg-white/15"
-                      >
-                        <div className="h-full flex flex-col items-center justify-center gap-3">
-                          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-white">
-                            {iconSource ? (
-                              <img src={iconSource} alt={`${contact.type} icon`} className="h-10 w-10 object-contain" />
-                            ) : (
-                              <Icon className="h-5 w-5" />
-                            )}
-                          </div>
-                          <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/80">{contact.type}</p>
-                          <h3 className="text-base font-bold text-white line-clamp-2">{contact.label}</h3>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </motion.div>
-              </div>
-
-              <div className="mt-4 flex gap-2 justify-center">
-                {contacts.map((_, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => setContactIndex(index)}
-                    animate={{
-                      width: index === contactIndex ? 32 : 12,
-                      backgroundColor: index === contactIndex ? '#ffffff' : '#ffffffd1',
-                      opacity: index === contactIndex ? 1 : 0.78,
-                      boxShadow: index === contactIndex ? '0 0 0 1px rgba(255, 255, 255, 0.2)' : '0 0 0 1px rgba(255, 255, 255, 0.5)'
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="h-2.5 rounded-full transition-all duration-300"
-                    aria-label={`Go to contact ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
+                  <div className="shrink-0 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
+                    {iconSource
+                      ? <img src={iconSource} alt={`${contact.type} icon`} loading="lazy" className="h-7 w-7 object-contain" />
+                      : <Icon className="h-4 w-4 text-white" />
+                    }
+                  </div>
+                  <div className="min-w-0 flex-1 text-left">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">{contact.type}</p>
+                    <p className="text-sm font-semibold text-white truncate">{contact.label}</p>
+                  </div>
+                  <ChevronRight className="shrink-0 h-4 w-4 text-white/40" />
+                </a>
+              );
+            })}
           </div>
 
           {/* Desktop Grid */}
@@ -379,7 +340,7 @@ export default function HomePage() {
                 <AnimatedSection key={contact.type} delay={index * 0.05}>
                   <a href={contact.href} target="_blank" rel="noreferrer" className="block h-full border border-white/15 bg-white/10 p-6 shadow-soft backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:bg-white/15">
                     <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/15 text-white">
-                      {iconSource ? <img src={iconSource} alt={`${contact.type} icon`} className="h-12 w-12 object-contain" /> : <Icon className="h-5 w-5" />}
+                      {iconSource ? <img src={iconSource} alt={`${contact.type} icon`} loading="lazy" className="h-12 w-12 object-contain" /> : <Icon className="h-5 w-5" />}
                     </div>
                     <p className="text-xs font-bold uppercase tracking-[0.22em] text-white/80">{contact.type}</p>
                     <h3 className="mt-2 text-lg font-bold text-white">{contact.label}</h3>
@@ -472,7 +433,8 @@ export default function HomePage() {
                       <p className="flex-1 text-sm leading-7 text-slate-600">"{review.text}"</p>
                       <div>
                         <p className="text-sm font-bold text-ink">{review.name}</p>
-                        <p className="text-xs text-slate-400">{review.location}</p>
+                        {/* text-slate-500 ≈ 4.6:1 on white — slate-400 was only 2.77:1, fails WCAG AA */}
+                        <p className="text-xs text-slate-500">{review.location}</p>
                       </div>
                     </div>
                   </AnimatedSection>
@@ -591,7 +553,7 @@ export default function HomePage() {
                     <div key={item.q}>
                       <button
                         onClick={() => setOpenFaq(isOpen ? null : i)}
-                        className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                        className="flex w-full items-center justify-between gap-4 py-5 text-left focus-visible:rounded focus-visible:outline-2 focus-visible:outline-moss"
                         aria-expanded={isOpen}
                       >
                         <span className={`text-sm font-semibold leading-6 transition-colors ${isOpen ? 'text-moss' : 'text-ink'}`}>

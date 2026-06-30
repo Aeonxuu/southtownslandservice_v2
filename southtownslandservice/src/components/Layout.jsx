@@ -22,9 +22,9 @@ export default function Layout() {
       {phone && (
         <a
           href={phone.href}
-          className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-3 py-4 md:hidden"
+          className="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-center gap-3 py-4 md:hidden"
           style={{
-            backgroundColor: '#22c55e',
+            backgroundColor: '#2d5016',
             boxShadow: '0 -4px 16px rgba(0,0,0,0.3)',
           }}
         >

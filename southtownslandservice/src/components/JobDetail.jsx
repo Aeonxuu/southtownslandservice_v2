@@ -37,7 +37,7 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-2 py-2 backdrop-blur-xl sm:px-4 sm:py-6"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 px-3 py-8 backdrop-blur-xl sm:px-4 sm:py-6"
           onClick={onClose}
         >
           <motion.div
@@ -45,7 +45,7 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 20 }}
             transition={{ duration: 0.28 }}
-            className="relative flex h-[100dvh] w-[100dvw] max-w-[1600px] flex-col overflow-hidden bg-white shadow-2xl sm:h-[96vh] sm:w-[96vw] lg:flex-row"
+            className="relative flex h-full w-full max-w-[1600px] flex-col overflow-hidden bg-white shadow-2xl sm:h-[96vh] sm:w-[96vw] lg:flex-row"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -57,7 +57,7 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
               <X className="h-4 w-4" />
             </button>
 
-            <div className="relative flex min-h-[48vh] flex-[1.7] items-center justify-center overflow-hidden bg-[#0C0C0C] lg:min-h-0">
+            <div className="relative flex h-[45vh] shrink-0 items-center justify-center overflow-hidden bg-[#0C0C0C] lg:h-auto lg:min-h-0 lg:flex-[1.7]">
               <img
                 src={job.images[activeImageIndex]}
                 alt={`${job.title} image ${activeImageIndex + 1}`}
@@ -86,7 +86,7 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
             {/* Mobile: hard edge separating dark photo panel from light sidebar */}
             <div className="h-px w-full bg-[#E4E6EB] lg:hidden" />
 
-            <div className="flex flex-col border-t border-[#E4E6EB] bg-white lg:w-[400px] lg:flex-shrink-0 lg:border-l lg:border-t-0 xl:w-[450px]">
+            <div className="flex flex-1 min-h-0 flex-col border-t border-[#E4E6EB] bg-white lg:w-[400px] lg:flex-shrink-0 lg:flex-none lg:border-l lg:border-t-0 xl:w-[450px]">
               {/* Header bar — category + counter */}
               <div className="flex items-center justify-between border-b border-[#E4E6EB] bg-[#F0F2F5] px-5 py-3 lg:px-6">
                 {job.category ? (
@@ -104,10 +104,9 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
               </div>
 
               {/* Scrollable body */}
-              <div className="flex flex-1 flex-col gap-5 overflow-y-auto p-5 lg:p-6">
+              <div className="flex flex-1 min-h-0 flex-col gap-5 overflow-y-auto p-5 lg:p-6">
                 {/* Title block */}
-                <div className="space-y-1.5">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCC0C4]">Project</p>
+                <div>
                   <h3 className="text-xl font-extrabold leading-snug text-[#050505] sm:text-2xl lg:text-3xl">{job.title}</h3>
                 </div>
 
@@ -132,11 +131,11 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
                   ))}
                 </div>
 
-                {/* Divider */}
-                <div className="h-px bg-[#E4E6EB]" />
+                {/* Divider — only needed before gallery on sm+ */}
+                <div className="hidden h-px bg-[#E4E6EB] sm:block" />
 
-                {/* Thumbnail strip */}
-                <div>
+                {/* Thumbnail strip — hidden on mobile, covered by the image panel */}
+                <div className="hidden sm:block">
                   <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-[#BCC0C4]">Gallery</p>
                   <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-6 lg:grid-cols-4 xl:grid-cols-5">
                     {job.images.map((image, index) => (
@@ -165,8 +164,8 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
                 </div>
               </div>
 
-              {/* Sticky CTA footer */}
-              <div className="border-t border-[#E4E6EB] bg-[#F0F2F5] p-5 lg:p-6">
+              {/* Sticky CTA footer — hidden on mobile */}
+              <div className="hidden border-t border-[#E4E6EB] bg-[#F0F2F5] p-5 sm:block lg:p-6">
                 <a
                   href="/#estimate"
                   onClick={onClose}

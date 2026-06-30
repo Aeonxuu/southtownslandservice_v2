@@ -18,6 +18,37 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Mobile trust badge ticker ──────────────────────────────────────────── */
+/* @keyframes stays here; the animation property itself is applied via inline
+   style in JSX so the global reduced-motion rule can never kill it.
+   useReducedMotion() in the component controls whether it runs.           */
+@keyframes badge-ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Reduced-motion fallback: hide scrollbar when ticker becomes manually scrollable */
+.ticker-fallback-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ticker-fallback-scroll::-webkit-scrollbar {
+  display: none;
+}
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+/* prefers-reduced-motion: kill hover/focus transitions only.
+   Animation-duration/iteration are intentionally excluded — ticker and
+   Framer Motion animations handle their own reduced-motion logic in JS.   */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   @apply bg-white font-body text-ink antialiased;
 }
@@ -26,33 +57,45 @@ body {
   background: rgba(45, 80, 22, 0.18);
 }
 
+/* Global keyboard-focus ring — WCAG 2.1 AA */
+:focus-visible {
+  outline: 2px solid #2d5016;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 @layer components {
   .page-shell {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
   .section-shell {
-    @apply py-16 sm:py-20 lg:py-24;
+    @apply py-10 sm:py-14 lg:py-16;
   }
 
   .eyebrow {
     @apply text-xs font-bold uppercase tracking-[0.24em] text-olive;
   }
 
+  /* leading-[1.15] prevents text-5xl's default line-height:1 from collapsing ascenders */
   .section-title {
-    @apply mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl lg:text-5xl;
+    @apply mt-3 text-3xl font-extrabold leading-[1.15] tracking-tight text-ink sm:text-4xl lg:text-5xl;
   }
 
   .section-copy {
     @apply mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base;
   }
 
+  /* cursor-pointer ensures buttons look clickable; min touch target via py/px already ≥44px on sm: sizes */
   .primary-button {
-    @apply inline-flex items-center justify-center rounded-sm border border-ink bg-ink px-5 py-3 text-sm font-semibold tracking-[0.16em] text-sand transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
+    @apply inline-flex cursor-pointer items-center justify-center rounded-sm border border-ink bg-ink px-5 py-3 text-sm font-semibold tracking-[0.16em] text-sand transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
   }
 
   .secondary-button {
-    @apply inline-flex items-center justify-center rounded-sm border border-white/70 bg-transparent px-5 py-3 text-sm font-semibold tracking-[0.16em] text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
+    @apply inline-flex cursor-pointer items-center justify-center rounded-sm border border-white/70 bg-transparent px-5 py-3 text-sm font-semibold tracking-[0.16em] text-white transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:text-ink;
   }
 
   .card-panel {

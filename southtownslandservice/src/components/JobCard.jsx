@@ -25,16 +25,16 @@ export default function JobCard({ job, isSelected, onClick, index }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-        {/* Category badge */}
+        {/* Category badge — hidden on mobile */}
         {job.category && (
-          <span className="absolute bottom-2 left-2 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm">
+          <span className="absolute bottom-2 left-2 hidden rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm sm:inline">
             {job.category}
           </span>
         )}
 
-        {/* Image count badge */}
+        {/* Image count badge — hidden on mobile */}
         {photoCount > 0 && (
-          <span className="absolute bottom-2 right-2 flex items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm">
+          <span className="absolute bottom-2 right-2 hidden items-center gap-1 rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold text-white backdrop-blur-sm sm:flex">
             <Images size={10} />
             {photoCount}
           </span>
