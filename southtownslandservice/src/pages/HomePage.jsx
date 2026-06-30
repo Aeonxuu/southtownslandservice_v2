@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ArrowRight, BadgeCheck, Mail, MapPin, Phone, Shield, ShieldCheck, Star } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { ArrowRight, BadgeCheck, ChevronDown, ClipboardList, CheckCircle2, Mail, MapPin, Phone, Shield, ShieldCheck, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedSection from '../components/AnimatedSection';
-import QuoteForm from '../components/QuoteForm';
 import SectionHeading from '../components/SectionHeading';
+import { useQuoteModal } from '../context/QuoteModalContext';
 import { brand, benefits, contacts, hero, serviceAreas, services, stats } from '../data/siteData';
 
 const contactIcons = {
@@ -15,8 +15,10 @@ const contactIcons = {
 };
 
 export default function HomePage() {
+  const { openModal } = useQuoteModal();
   const [contactIndex, setContactIndex] = useState(0);
   const [benefitIndex, setBenefitIndex] = useState(0);
+  const [openFaq, setOpenFaq] = useState(null);
 
   useEffect(() => {
     const scriptId = 'elfsight-platform-script';
@@ -70,10 +72,13 @@ export default function HomePage() {
               <span className="whitespace-nowrap">{hero.titleBottom}</span>
             </h1>
             <div className="mt-4 flex flex-row items-center justify-center gap-2 sm:mt-7 sm:gap-3">
-              <a href="#contact" className="primary-button border-sand bg-sand text-ink px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-sm hover:bg-transparent hover:text-white">
+              <button
+                onClick={openModal}
+                className="primary-button border-sand bg-sand text-ink px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-sm hover:bg-transparent hover:text-white"
+              >
                 {hero.primaryCta.label}
                 <ArrowRight className="ml-1 h-3 w-3 sm:ml-2 sm:h-4 sm:w-4" />
-              </a>
+              </button>
               <a href={hero.secondaryCta.href} className="secondary-button px-3 py-2 text-xs sm:px-5 sm:py-3 sm:text-sm">
                 {hero.secondaryCta.label}
               </a>
@@ -171,17 +176,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Stats strip */}
-          <AnimatedSection delay={0.1}>
-            <div className="mt-10 grid grid-cols-2 gap-4 border-t border-[#546326]/20 pt-10 sm:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center text-center">
-                  <span className="text-2xl font-extrabold text-moss sm:text-3xl">{stat.value}</span>
-                  <span className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-ink/50">{stat.label}</span>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
         </div>
       </section>
 
@@ -231,6 +225,64 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* ── HOW IT WORKS ── */}
+      {(() => {
+        const STEPS = [
+          {
+            Icon: Phone,
+            title: 'Contact Us',
+            text: "Call us or fill out our quote form. Tell us about your property and what you need done. We'll get back to you fast.",
+          },
+          {
+            Icon: ClipboardList,
+            title: 'Free On-Site Estimate',
+            text: "We come to your property, assess the job, and give you a clear, written estimate. No surprises, no pressure.",
+          },
+          {
+            Icon: CheckCircle2,
+            title: 'Job Done Right',
+            text: "We show up, do the work, and leave the property clean. You only pay once the job meets your standards.",
+          },
+        ];
+
+        return (
+          <section id="how-it-works" className="section-shell bg-[#F8F7F5]">
+            <div className="page-shell">
+              <AnimatedSection>
+                <SectionHeading eyebrow="Simple Process" title="How It Works" center />
+              </AnimatedSection>
+
+              <div className="mt-12 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-0">
+                {STEPS.map((step, i) => (
+                  <>
+                    <AnimatedSection key={step.title} delay={i * 0.1} className="flex flex-1 flex-col items-center text-center px-6">
+                      {/* Icon circle with step number badge */}
+                      <div className="relative">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-moss/25 bg-white shadow-sm">
+                          <step.Icon size={30} className="text-moss" strokeWidth={1.5} />
+                        </div>
+                        <span className="absolute -right-1 -top-1 flex h-6 w-6 items-center justify-center rounded-full bg-moss text-[11px] font-extrabold text-white shadow">
+                          {i + 1}
+                        </span>
+                      </div>
+                      <h3 className="mt-5 text-base font-bold text-ink">{step.title}</h3>
+                      <p className="mt-2.5 max-w-[220px] text-sm leading-6 text-slate-500">{step.text}</p>
+                    </AnimatedSection>
+
+                    {/* Arrow connector — desktop only */}
+                    {i < STEPS.length - 1 && (
+                      <div key={`arrow-${i}`} className="hidden lg:flex items-start justify-center pt-10 w-10 shrink-0">
+                        <ArrowRight size={20} className="text-moss/35" strokeWidth={2} />
+                      </div>
+                    )}
+                  </>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ── CONTACT ── */}
       <section id="contact" className="section-shell bg-sky text-white">
@@ -335,38 +387,6 @@ export default function HomePage() {
                 </AnimatedSection>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── QUOTE FORM ── */}
-      <section id="quote" className="section-shell bg-ink">
-        <div className="page-shell">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 lg:items-start">
-            <AnimatedSection>
-              <div className="[&_.section-title]:text-white [&_.eyebrow]:text-moss">
-                <SectionHeading
-                  eyebrow="Free Estimate"
-                  title="Request a Quote"
-                />
-              </div>
-              <p className="mt-4 text-sm leading-7 text-white/55">
-                Fill out the form and we'll get back to you within one business day with a clear, honest estimate — no obligation.
-              </p>
-              <ul className="mt-5 space-y-2">
-                {['Free estimates, always', 'No hidden costs or surprises', 'Serving Western New York'].map((item) => (
-                  <li key={item} className="flex items-center gap-2.5 text-sm text-white/60">
-                    <BadgeCheck size={15} className="shrink-0 text-moss" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </AnimatedSection>
-            <AnimatedSection delay={0.08}>
-              <div className="rounded-md border border-white/10 bg-white/5 p-6 sm:p-8">
-                <QuoteForm />
-              </div>
-            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -527,6 +547,106 @@ export default function HomePage() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* ── FAQ ── */}
+      {(() => {
+        const FAQS = [
+          {
+            q: 'Are you licensed and insured?',
+            a: 'Yes. Southtowns Land Service is fully licensed and insured for all land clearing, excavation, and grading work in New York State. We carry general liability insurance and workers\' compensation.',
+          },
+          {
+            q: 'What areas do you serve?',
+            a: 'We serve Boston, NY and surrounding Erie County communities including Hamburg, Eden, Angola, Orchard Park, East Aurora, and more. Not sure if we come to you? Call us and we\'ll let you know.',
+          },
+          {
+            q: 'Do you offer free estimates?',
+            a: 'Yes — always. We visit your property, assess the scope, and give you a written estimate before any work begins. No obligation.',
+          },
+          {
+            q: 'Do I need permits for excavation or land clearing work?',
+            a: 'It depends on the scope and your municipality. We\'ll let you know during the estimate whether permits are required and can walk you through the process.',
+          },
+          {
+            q: 'How long does a typical job take?',
+            a: '1–3 days for most residential land clearing and grading jobs. Larger excavation or site prep projects may take longer. We give you a clear timeline with your estimate.',
+          },
+          {
+            q: 'What equipment do you use?',
+            a: 'We own and operate our own equipment — tractors, excavators, and skid steers. No subcontractors, no delays waiting on a rented machine.',
+          },
+        ];
+
+        return (
+          <section id="faq" className="section-shell bg-white">
+            <div className="page-shell">
+              <AnimatedSection>
+                <SectionHeading eyebrow="Got Questions?" title="Frequently Asked" center />
+              </AnimatedSection>
+
+              <div className="mx-auto mt-10 max-w-2xl divide-y divide-black/8">
+                {FAQS.map((item, i) => {
+                  const isOpen = openFaq === i;
+                  return (
+                    <div key={item.q}>
+                      <button
+                        onClick={() => setOpenFaq(isOpen ? null : i)}
+                        className="flex w-full items-center justify-between gap-4 py-5 text-left"
+                        aria-expanded={isOpen}
+                      >
+                        <span className={`text-sm font-semibold leading-6 transition-colors ${isOpen ? 'text-moss' : 'text-ink'}`}>
+                          {item.q}
+                        </span>
+                        <motion.span
+                          animate={{ rotate: isOpen ? 180 : 0 }}
+                          transition={{ duration: 0.22, ease: 'easeInOut' }}
+                          className="shrink-0"
+                        >
+                          <ChevronDown
+                            size={18}
+                            className={`transition-colors ${isOpen ? 'text-moss' : 'text-ink/40'}`}
+                            strokeWidth={2}
+                          />
+                        </motion.span>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            key="answer"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <p className="pb-5 pr-8 text-sm leading-7 text-slate-500">
+                              {item.a}
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <AnimatedSection delay={0.1}>
+                <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-400">
+                  Still have questions?{' '}
+                  <button onClick={openModal} className="font-semibold text-moss underline-offset-4 hover:underline">
+                    Request a free estimate
+                  </button>{' '}
+                  or{' '}
+                  <a href="tel:+17169836564" className="font-semibold text-moss underline-offset-4 hover:underline">
+                    give us a call
+                  </a>.
+                </p>
+              </AnimatedSection>
+            </div>
+          </section>
+        );
+      })()}
     </>
   );
 }

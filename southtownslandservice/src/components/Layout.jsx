@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Phone } from 'lucide-react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import QuoteModal from './QuoteModal';
 import { contacts } from '../data/siteData';
 
 const phone = contacts.find((c) => c.type === 'Phone');
@@ -14,6 +15,8 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+
+      <QuoteModal />
 
       {/* Sticky click-to-call — mobile only */}
       {phone && (

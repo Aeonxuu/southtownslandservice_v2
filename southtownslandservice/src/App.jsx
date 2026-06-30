@@ -3,9 +3,11 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import JobsPage from './pages/JobsPage';
 import QuotePage from './pages/QuotePage';
+import { QuoteModalProvider } from './context/QuoteModalContext';
 
 export default function App() {
   return (
+    <QuoteModalProvider>
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
@@ -14,5 +16,6 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
+    </QuoteModalProvider>
   );
 }
