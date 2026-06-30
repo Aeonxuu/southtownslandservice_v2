@@ -51,7 +51,7 @@ export const benefits = [
 
 export const stats = [
   { value: '48+', label: 'Projects Completed' },
-  { value: '8', label: 'Services Offered' },
+  { value: '18', label: 'Services Offered' },
   { value: 'Free', label: 'Estimates' },
   { value: 'Fully Insured', label: 'Licensed LLC' }
 ];
