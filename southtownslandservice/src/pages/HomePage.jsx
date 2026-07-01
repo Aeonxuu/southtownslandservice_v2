@@ -354,10 +354,8 @@ export default function HomePage() {
 
       {/* ── REVIEWS ── */}
       {(() => {
-        // ─────────────────────────────────────────────────────────────
-        // SWAP THESE URLs when the Google Business Profile is confirmed
         const GOOGLE_URL = 'https://www.google.com/search?q=Southtowns+Land+Service+LLC+Boston+NY+reviews';
-        const BBB_URL    = 'https://www.bbb.org/us/ny/boston/profile/excavating-contractors/southtowns-land-service-llc-0041-236029104/';
+        const REVIEW_URL = 'https://g.page/r/CWKPCbj9ZuXbEBM/review';
 
         // ─────────────────────────────────────────────────────────────
         // REPLACE THESE with real Google reviews when available.
@@ -443,22 +441,15 @@ export default function HomePage() {
 
               {/* CTA row */}
               <AnimatedSection delay={0.18}>
-                <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-5">
+                <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
                   <a
-                    href={GOOGLE_URL}
+                    href={REVIEW_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-moss px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-moss transition hover:bg-moss hover:text-white"
+                    className="flex w-full items-center justify-center gap-2 rounded-md bg-moss px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:bg-olive sm:w-auto"
                   >
-                    See All Reviews on Google <ArrowRight size={13} />
-                  </a>
-                  <a
-                    href={BBB_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-md border border-black/15 px-5 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-slate-500 transition hover:border-ink hover:text-ink"
-                  >
-                    View BBB Profile <ArrowRight size={13} />
+                    <Star size={13} className="fill-white text-white" />
+                    Leave Us a Review
                   </a>
                 </div>
               </AnimatedSection>
