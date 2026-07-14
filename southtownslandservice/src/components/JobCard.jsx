@@ -25,10 +25,10 @@ export default function JobCard({ job, isSelected, onClick, index }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-        {/* Category badge — hidden on mobile */}
-        {job.category && (
+        {/* Primary category badge — hidden on mobile */}
+        {job.categories?.length > 0 && (
           <span className="absolute bottom-2 left-2 hidden rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm sm:inline">
-            {job.category}
+            {job.categories[0]}
           </span>
         )}
 

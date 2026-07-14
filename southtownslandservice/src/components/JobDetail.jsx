@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Images, MessageCircle, Tag, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MessageCircle, Tag, X } from 'lucide-react';
 
 export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onClose }) {
   useEffect(() => {
@@ -87,20 +87,17 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
             <div className="h-px w-full bg-[#E4E6EB] lg:hidden" />
 
             <div className="flex flex-1 min-h-0 flex-col border-t border-[#E4E6EB] bg-white lg:w-[400px] lg:flex-shrink-0 lg:flex-none lg:border-l lg:border-t-0 xl:w-[450px]">
-              {/* Header bar — category + counter */}
-              <div className="flex items-center justify-between border-b border-[#E4E6EB] bg-[#F0F2F5] px-5 py-3 lg:px-6">
-                {job.category ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-moss/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-moss">
+              {/* Header bar — categories */}
+              <div className="flex flex-wrap items-center gap-1.5 border-b border-[#E4E6EB] bg-[#F0F2F5] px-5 py-3 lg:px-6">
+                {job.categories?.map((category) => (
+                  <span
+                    key={category}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-moss/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-moss"
+                  >
                     <Tag size={10} />
-                    {job.category}
+                    {category}
                   </span>
-                ) : (
-                  <span />
-                )}
-                <span className="flex items-center gap-1.5 text-[11px] font-semibold text-[#65676B]">
-                  <Images size={11} className="text-[#BCC0C4]" />
-                  {activeImageIndex + 1} / {job.images.length}
-                </span>
+                ))}
               </div>
 
               {/* Scrollable body */}

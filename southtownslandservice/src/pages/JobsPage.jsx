@@ -17,7 +17,7 @@ export default function JobsPage() {
   );
 
   const categories = useMemo(() => {
-    const cats = new Set(orderedJobs.map((j) => j.category).filter(Boolean));
+    const cats = new Set(orderedJobs.flatMap((j) => j.categories ?? []));
     return [ALL, ...Array.from(cats).sort()];
   }, [orderedJobs]);
 
@@ -37,14 +37,14 @@ export default function JobsPage() {
     if (!isFiltered) return null;
     let result = orderedJobs;
     if (activeCategory !== ALL) {
-      result = result.filter((j) => j.category === activeCategory);
+      result = result.filter((j) => j.categories?.includes(activeCategory));
     }
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(
         (j) =>
           j.title?.toLowerCase().includes(q) ||
-          j.category?.toLowerCase().includes(q) ||
+          j.categories?.some((c) => c.toLowerCase().includes(q)) ||
           j.description?.toLowerCase().includes(q)
       );
     }

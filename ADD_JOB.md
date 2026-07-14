@@ -7,10 +7,11 @@ This document is the complete instructions for adding a new job or project to th
 ## How the site stores jobs
 
 - All job metadata lives in [`southtownslandservice/src/data/siteData.js`](southtownslandservice/src/data/siteData.js)
-- Each job uses `buildJob(id, title, description, imageCount, extension)`
+- Each job uses `buildJob(id, title, description, imageCount, extension, categories)`
 - Images are served from `southtownslandservice/public/media/jobs/{id}/`
-- The site currently has **47 jobs** (IDs 1–47). Each new job gets the next sequential ID.
-- **Featured jobs** appear in the top "Featured jobs" grid on the Jobs page. Currently IDs 42–47.
+- The site currently has **49 jobs** (IDs 1–49). Each new job gets the next sequential ID.
+- **Featured jobs** appear in the top "Featured jobs" grid on the Jobs page. Currently IDs 42–47 and 49.
+- `categories` is an **array of strings** — a job can carry multiple tags and will show up under every matching filter option on the Jobs page. The first category in the array is the primary one shown on the job card thumbnail; the detail modal shows all of them. Use existing categories: `Excavation`, `Driveway`, `Drainage & Utilities`, `Grading & Leveling`, `Brush Hogging`, `Forestry Mulching`, `Stump Removal`, `Snow Management`.
 - **Regular jobs** appear in the "Other Projects" grid below. Both sections sort newest-first (highest ID = top).
 
 ---
@@ -128,7 +129,7 @@ Delete every `.jpg` and `.png` file inside `raw_data/project/` (cover image + al
 ## Reference: `buildJob` signature
 
 ```js
-buildJob(id, title, description, imageCount, extension = 'png')
+buildJob(id, title, description, imageCount, extension = 'png', categories = [])
 ```
 
 | Param | Type | Notes |
@@ -138,6 +139,7 @@ buildJob(id, title, description, imageCount, extension = 'png')
 | `description` | string | Quoted string |
 | `imageCount` | number | Count of numbered images only (not cover) |
 | `extension` | string | `'jpg'` or `'png'` (default `'png'`) |
+| `categories` | string[] | One or more filter categories, primary first (see list above) |
 
 ---
 
