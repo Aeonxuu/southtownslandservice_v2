@@ -148,8 +148,10 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
                         ].join(' ')}
                       >
                         <img
-                          src={image}
+                          src={job.thumbnails[index]}
                           alt={`${job.title} thumbnail ${index + 1}`}
+                          loading="lazy"
+                          decoding="async"
                           className="aspect-square w-full object-cover transition duration-300 group-hover:scale-105"
                         />
                         {activeImageIndex === index && (

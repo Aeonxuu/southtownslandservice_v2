@@ -19,8 +19,10 @@ export default function JobCard({ job, isSelected, onClick, index }) {
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-mist">
         <img
-          src={job.images[0]}
+          src={job.cover}
           alt={job.title}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
