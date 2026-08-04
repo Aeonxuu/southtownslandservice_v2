@@ -1,135 +1,138 @@
 # Add a Job / Project — Automation Reference
 
-This document is the complete instructions for adding a new job or project to the Southtowns Land Service website. After following the **prep steps**, share this doc and say _"add the job"_ — Claude will execute every step with no further input needed.
+Drop your photos in `raw_data/project/`, write the job details in a `.txt` file, then say _"add the job"_. Claude runs the rest.
+
+---
+
+## One-time setup
+
+You only do this once. Skip if `.env` already exists.
+
+1. Copy the template: `cp .env.example .env`
+2. In the Cloudinary console, go to **Settings → API Keys** and copy the key **and** its secret from the **same row** into `.env`.
+3. Confirm the pair actually works before relying on it:
+
+   ```bash
+   set -a; . ./.env; set +a
+   curl -s -u "$CLOUDINARY_API_KEY:$CLOUDINARY_API_SECRET" \
+     https://api.cloudinary.com/v1_1/fzwunkn3/ping
+   ```
+
+   `{"status":"ok"}` means you're good. `restricted api_key` means that key is a scoped
+   integration key (the Cloudinary MCP connector uses one) and can't sign uploads on its
+   own — use a full key pair instead. Anything else means the key and secret don't match.
+
+`.env` is gitignored, so the secret never leaves your machine. The cloud name (`fzwunkn3`) is public — it appears in every image URL — and is hardcoded in the upload script.
 
 ---
 
 ## How the site stores jobs
 
-- All job metadata lives in [`southtownslandservice/src/data/siteData.js`](southtownslandservice/src/data/siteData.js)
-- Each job uses `buildJob(id, title, description, imageCount, extension, categories)`
-- Images are served from `southtownslandservice/public/media/jobs/{id}/`
-- The site currently has **49 jobs** (IDs 1–49). Each new job gets the next sequential ID.
-- **Featured jobs** appear in the top "Featured jobs" grid on the Jobs page. Currently IDs 42–47 and 49.
-- `categories` is an **array of strings** — a job can carry multiple tags and will show up under every matching filter option on the Jobs page. The first category in the array is the primary one shown on the job card thumbnail; the detail modal shows all of them. Use existing categories: `Excavation`, `Driveway`, `Drainage & Utilities`, `Grading & Leveling`, `Brush Hogging`, `Forestry Mulching`, `Stump Removal`, `Snow Management`.
-- **Regular jobs** appear in the "Other Projects" grid below. Both sections sort newest-first (highest ID = top).
+- Job metadata lives in [`southtownslandservice/src/data/siteData.js`](southtownslandservice/src/data/siteData.js), one `buildJob(...)` call per project.
+- **Photos live on Cloudinary, never in this repo.** Public IDs are flat and extension-less:
+  - Cover: `southtowns/jobs/{id}-cover`
+  - Gallery: `southtowns/jobs/{id}-1`, `southtowns/jobs/{id}-2`, …
+- `buildJob` derives every URL from the job ID, so adding a job means adding one line — no paths to type.
+- The site currently has **50 jobs** (IDs 1–50). Each new job takes the next number.
+- **Featured jobs** appear in the top grid on the Jobs page. Currently IDs 42–47 and 49.
+- `categories` is an **array** — a job shows up under every matching filter. The first one is shown on the card; the modal shows all. Use: `Excavation`, `Driveway`, `Drainage & Utilities`, `Grading & Leveling`, `Brush Hogging`, `Forestry Mulching`, `Stump Removal`, `Snow Management`.
+
+### Why photos aren't in the repo
+
+Serving them from Netlify's CDN was the largest line item on the Netlify bill — 224 of 242 credits. They now come from Cloudinary with `f_auto,q_auto`, which cut a typical visit by roughly 82%. **Never add image files to `southtownslandservice/public/media/` — that's what caused the problem.**
 
 ---
 
-## Your prep checklist (do this before asking Claude)
+## Your prep checklist
 
-### 1 — Drop images into the staging folder
-
-**Folder:** `raw_data/project/`
+### 1 — Drop images into `raw_data/project/`
 
 | File name | Rule |
 |-----------|------|
-| `cover.jpg` **or** `cover.png` | Required. This is the card thumbnail shown in the grid. |
-| `1.jpg`, `2.jpg`, … `N.jpg` **or** `1.png`, `2.png`, … `N.png` | Required. Numbered gallery images shown inside the detail modal. Start at 1, no gaps. |
+| `cover.jpg` (or `.png`) | Required. The card thumbnail in the grid. |
+| `1.jpg`, `2.jpg`, … `N.jpg` | Required. Gallery images in the detail modal. **Start at 1, no gaps.** |
 
-> All images in one project must share the same extension (all `.jpg` **or** all `.png`). The cover and gallery images must use the same extension.
+> Extensions don't need to match — mix `.jpg` and `.png` freely. Cloudinary serves the right format per browser regardless of what you upload.
 
-### 2 — Fill in `raw_data/project/info.txt`
+The upload script refuses to run if the cover is missing, if there are two covers, if the numbering has a gap, or if there's an unrecognised file in the folder. Those are the mistakes that silently break a gallery, so it's better to be stopped early.
 
-Create (or overwrite) a plain text file named **`info.txt`** inside `raw_data/project/` with exactly this format:
+### 2 — Write the job details in a `.txt` file
 
 ```
 title: Your Project Title Here
-description: Full description of the job. One paragraph. No line breaks inside the description.
+description: Full description of the job. One paragraph, no line breaks.
 featured: yes
 ```
 
-or for a regular (non-featured) job:
+**The filename doesn't matter.** Any `.txt` file works, either inside `raw_data/project/` or one level up in `raw_data/`. `info.txt`, `job.txt`, `notes.txt` — all fine. The only rule is that there be exactly one; if the script finds two it stops and shows you both rather than guessing.
 
-```
-title: Your Project Title Here
-description: Full description of the job. One paragraph. No line breaks inside the description.
-featured: no
-```
+- `title` — plain text, no quotes. Use `&` freely.
+- `description` — plain text, one line, no quotes. Apostrophes are fine.
+- `featured` — `yes` or `no`. Use `yes` for large multi-image showcase jobs.
 
-**Field rules:**
-- `title` — Plain text, no quotes needed. Use `&` for ampersands (e.g., `Driveway, Drainage & Pavilion Site Prep`).
-- `description` — Plain text, one line, no quotes. Write it as a complete sentence or two describing the work done.
-- `featured` — Either `yes` or `no`. Use `yes` for large, multi-image showcase jobs. Use `no` for smaller service examples.
+### 3 — Say "add the job"
 
-### 3 — Confirm the folder looks right
-
-Before asking Claude to run the automation, the `raw_data/project/` folder should contain:
-
-```
-raw_data/project/
-├── cover.jpg       ← (or cover.png)
-├── 1.jpg           ← (or .png)
-├── 2.jpg
-├── ...
-├── N.jpg           ← last numbered image
-└── info.txt        ← title, description, featured
-```
+That's all. Everything below is what Claude does.
 
 ---
 
-## What Claude will do (automation steps)
+## What Claude does
 
-When you say _"add the job"_, Claude executes the following steps in order:
+### Step 1 — Read and validate
+Read the job details, count the numbered images, and confirm a cover exists. Determine the new ID by finding the highest existing job in `siteData.js` and adding 1.
 
-### Step 1 — Read `info.txt`
-Parse `raw_data/project/info.txt` to extract:
-- `title`
-- `description`
-- `featured` flag (`yes` / `no`)
+Preview without uploading anything:
 
-### Step 2 — Detect image extension and count
-- Check whether `cover.jpg` or `cover.png` exists to determine the extension.
-- Count all sequentially numbered files (`1.ext`, `2.ext`, … `N.ext`) to get `imageCount`. Stop counting at the first gap.
-
-### Step 3 — Determine the new job ID
-- Read `southtownslandservice/src/data/siteData.js`
-- Find the highest existing job ID
-- New ID = highest ID + 1
-
-### Step 4 — Copy images to the public media folder
-Copy every file from `raw_data/project/` (except `info.txt`) into:
+```bash
+node scripts/upload-job.mjs <newId> --dry-run
 ```
-southtownslandservice/public/media/jobs/{newId}/
-```
-Create the folder if it doesn't exist. Files keep their exact names (`cover.jpg`, `1.jpg`, etc.).
 
-### Step 5 — Add the job entry to `siteData.js`
-Append a new `buildJob(...)` call as the **last item** in the `jobs` array, immediately before the closing `];`:
+### Step 2 — Upload
+```bash
+node scripts/upload-job.mjs <newId>
+```
+
+The script signs the request locally with your API secret, uploads every file to the right public ID, and:
+
+- **refuses to overwrite** an existing job's photos unless you pass `--force`
+- **retries** each file up to 3 times
+- **aborts** if any file lands at an unexpected public ID
+- **verifies** the cover and last gallery image actually deliver over HTTP
+- **archives** the originals to `raw_data/archive/{id}/` and clears the staging folder
+
+It finishes by printing the exact `buildJob(...)` line to add.
+
+### Step 3 — Add the job to `siteData.js`
+Append the printed line as the **last** item in the `jobs` array, filling in the categories:
 
 ```js
-buildJob(48, 'Your Title Here', 'Your description here.', 15, 'jpg')
+buildJob(50, 'Your Title Here', 'Your description here.', 15, ['Driveway', 'Grading & Leveling'])
 ```
 
-The trailing comma on the previous last entry must be present; the new last entry has no trailing comma.
+Make sure the previous last entry now ends with a comma.
 
-### Step 6 — Update `featuredJobs` (only if `featured: yes`)
-If the job is featured, update the `featuredJobs` filter on the last line of `siteData.js` to include the new ID:
+### Step 4 — Update `featuredJobs` (only if `featured: yes`)
+Add the new ID to the filter on the last line of `siteData.js`:
 
-**Before:**
 ```js
-export const featuredJobs = jobs.filter((job) => job.id === 42 || ... || job.id === 47);
+export const featuredJobs = jobs.filter((job) => job.id === 42 || ... || job.id === 50);
 ```
 
-**After (example for new ID 48):**
-```js
-export const featuredJobs = jobs.filter((job) => job.id === 42 || ... || job.id === 47 || job.id === 48);
+### Step 5 — Verify
+```bash
+npm --prefix southtownslandservice run build
 ```
 
-### Step 7 — Clean up the staging folder
-Delete every `.jpg` and `.png` file inside `raw_data/project/` (cover image + all numbered images). Also delete `info.txt`. The folder must be completely empty after this step — verify with a directory listing before reporting done.
-
-### Step 8 — Verify
-- Confirm `siteData.js` parses cleanly (check for missing commas, unclosed brackets)
-- Confirm all image files exist at the new media path
-- Report back: new job ID, title, imageCount, extension, featured status
+Then confirm the new job renders and report back: ID, title, image count, featured status, and the public IDs created.
 
 ---
 
-## Reference: `buildJob` signature
+## Reference
+
+### `buildJob` signature
 
 ```js
-buildJob(id, title, description, imageCount, extension = 'png', categories = [])
+buildJob(id, title, description, imageCount, categories = [])
 ```
 
 | Param | Type | Notes |
@@ -137,27 +140,45 @@ buildJob(id, title, description, imageCount, extension = 'png', categories = [])
 | `id` | number | Sequential, no gaps |
 | `title` | string | Quoted string |
 | `description` | string | Quoted string |
-| `imageCount` | number | Count of numbered images only (not cover) |
-| `extension` | string | `'jpg'` or `'png'` (default `'png'`) |
-| `categories` | string[] | One or more filter categories, primary first (see list above) |
+| `imageCount` | number | Numbered images only — **not** the cover |
+| `categories` | string[] | Primary first |
 
----
+Each job exposes three URL sets, all generated from the ID:
 
-## Reference: key file paths
+| Field | Transform | Used by |
+|-------|-----------|---------|
+| `cover` | `f_auto,q_auto,w_800` | Job card in the grid |
+| `images[]` | `f_auto,q_auto,w_1600` | Main image in the detail modal |
+| `thumbnails[]` | `f_auto,q_auto,w_200` | Thumbnail strip in the detail modal |
+
+The thumbnail strip has its own size on purpose — pointing it at `images` would pull full-size photos to render 80px squares.
+
+### Key paths
 
 | Purpose | Path |
 |---------|------|
-| Job data (titles, descriptions) | `southtownslandservice/src/data/siteData.js` |
-| Deployed images | `southtownslandservice/public/media/jobs/{id}/` |
-| Staging folder (your uploads) | `raw_data/project/` |
-| Job metadata input | `raw_data/project/info.txt` |
+| Job data | `southtownslandservice/src/data/siteData.js` |
+| Upload script | `scripts/upload-job.mjs` |
+| Credentials | `.env` (gitignored) |
+| Staging folder | `raw_data/project/` (gitignored) |
+| Photo archive | `raw_data/archive/{id}/` (gitignored) |
+| Job photos | Cloudinary `southtowns/jobs/`, cloud name `fzwunkn3` |
+| Still local | `southtownslandservice/public/media/icons/`, `.../fonts/` |
 
----
-
-## Example `info.txt`
+### Example job details file
 
 ```
 title: New Cabin Utility & Driveway Completion
 description: We installed the final electrical and water service lines for a new cabin and completed the driveway. Next, we move into the drainage and septic phases.
 featured: yes
 ```
+
+---
+
+## Things worth knowing
+
+**`raw_data/archive/` is your only local copy.** Photos are removed from the repo after upload, so the archive folder and Cloudinary are the two places a project photo exists. It's gitignored, which means it is *not* backed up by pushing to GitHub — include it in whatever backs up your machine.
+
+**Cloudinary's free tier is 25 credits/month**, shared across storage, bandwidth, and transformations. Current usage is well under that, but if traffic grows, check **Settings → Usage** in the console. If storage becomes the pinch, originals can be capped on upload (we currently store them at full resolution so the archive and the cloud copy match).
+
+**Watch the video.** The 36 MB hero background is now 9.9 MB via Cloudinary, but it's still the single largest thing a homepage visitor downloads — larger than the entire jobs grid. Dropping it to `w_1280` (6.0 MB) or replacing autoplay with a poster image and click-to-play would save more than the whole photo migration did.
