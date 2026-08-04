@@ -1,3 +1,11 @@
 node_modules/
 .env
 .env.local
+
+# Netlify rebuilds this from source on every deploy (see netlify.toml),
+# so committing it only duplicated the media files inside it.
+southtownslandservice/dist/
+
+# Project photos are staged here before upload and archived here afterwards.
+# They must never be committed — that is what bloated the repo in the first place.
+raw_data/
