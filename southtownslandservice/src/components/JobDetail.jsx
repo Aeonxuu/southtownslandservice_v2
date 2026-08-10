@@ -1,8 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, MessageCircle, Tag, X } from 'lucide-react';
 
 export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onClose }) {
+  const [loadedSrc, setLoadedSrc] = useState(null);
+  const currentSrc = job ? job.images[activeImageIndex] : null;
+  const isLoading = currentSrc !== null && loadedSrc !== currentSrc;
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape' && job) {
@@ -20,6 +24,20 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeImageIndex, job, onClose, onThumbnailClick]);
+
+  // Warm the next and previous photos in the browser cache. Gallery images run to
+  // ~900KB, so without this every arrow click starts a download from scratch.
+  // Only the immediate neighbours — preloading a whole 20-photo job would pull
+  // several MB for images most visitors never open.
+  useEffect(() => {
+    if (!job) return;
+    const { length } = job.images;
+    if (length < 2) return;
+    for (const index of [(activeImageIndex + 1) % length, (activeImageIndex - 1 + length) % length]) {
+      const img = new Image();
+      img.src = job.images[index];
+    }
+  }, [activeImageIndex, job]);
 
   const goToPrevious = () => {
     onThumbnailClick((activeImageIndex - 1 + job.images.length) % job.images.length);
@@ -58,11 +76,36 @@ export default function JobDetail({ job, activeImageIndex, onThumbnailClick, onC
             </button>
 
             <div className="relative flex h-[45vh] shrink-0 items-center justify-center overflow-hidden bg-[#0C0C0C] lg:h-auto lg:min-h-0 lg:flex-[1.7]">
+              {/* The w_200 thumbnail is already cached by the strip, so it paints
+                  instantly and stands in, blurred, until the full photo arrives. */}
               <img
-                src={job.images[activeImageIndex]}
-                alt={`${job.title} image ${activeImageIndex + 1}`}
-                className="h-full w-full object-contain"
+                src={job.thumbnails[activeImageIndex]}
+                alt=""
+                aria-hidden="true"
+                className={[
+                  'absolute inset-0 h-full w-full scale-105 object-contain blur-xl transition-opacity duration-300',
+                  isLoading ? 'opacity-100' : 'opacity-0'
+                ].join(' ')}
               />
+
+              <img
+                key={currentSrc}
+                src={currentSrc}
+                alt={`${job.title} image ${activeImageIndex + 1}`}
+                fetchPriority="high"
+                onLoad={() => setLoadedSrc(currentSrc)}
+                onError={() => setLoadedSrc(currentSrc)}
+                className={[
+                  'relative h-full w-full object-contain transition-opacity duration-300',
+                  isLoading ? 'opacity-0' : 'opacity-100'
+                ].join(' ')}
+              />
+
+              {isLoading && (
+                <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/25 border-t-white/80" />
+                </div>
+              )}
 
               <button
                 type="button"
