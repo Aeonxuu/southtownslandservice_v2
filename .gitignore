@@ -1,6 +1,7 @@
 node_modules/
 .env
 .env.local
+.DS_Store
 
 # Netlify rebuilds this from source on every deploy (see netlify.toml),
 # so committing it only duplicated the media files inside it.
