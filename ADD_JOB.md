@@ -33,7 +33,7 @@ You only do this once. Skip if `.env` already exists.
   - Cover: `southtowns/jobs/{id}-cover`
   - Gallery: `southtowns/jobs/{id}-1`, `southtowns/jobs/{id}-2`, …
 - `buildJob` derives every URL from the job ID, so adding a job means adding one line — no paths to type.
-- The site currently has **50 jobs** (IDs 1–50). Each new job takes the next number.
+- The site currently has **51 jobs** (IDs 1–51). Each new job takes the next number.
 - **Featured jobs** appear in the top grid on the Jobs page. Currently IDs 42–47 and 49.
 - `categories` is an **array** — a job shows up under every matching filter. The first one is shown on the card; the modal shows all. Use: `Excavation`, `Driveway`, `Drainage & Utilities`, `Grading & Leveling`, `Brush Hogging`, `Forestry Mulching`, `Stump Removal`, `Snow Management`.
 
