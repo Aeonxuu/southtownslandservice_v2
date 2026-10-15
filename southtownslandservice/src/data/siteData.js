@@ -47,8 +47,8 @@ export const hero = {
     href: 'https://www.facebook.com/southtownslandservice'
   },
   secondaryCta: {
-    label: 'VIEW SERVICES',
-    href: '#services'
+    label: 'VIEW JOBS',
+    href: '/jobs'
   }
 };
 
